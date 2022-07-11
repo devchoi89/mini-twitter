@@ -6,7 +6,6 @@ import useUser from "../lib/useUser";
 
 export default function Home() {
   const { user, isLoading } = useUser();
-  console.log(user);
   return (
     <Layout title={user?.name} canGoBack hasSideBar>
       <div className="flex flex-col w-full max-w-lg mx-auto pb-5">

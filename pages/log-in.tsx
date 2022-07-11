@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -18,8 +19,8 @@ export default function LogIn() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginForm>({ mode: "onChange" });
-  const onValid = (validForm: LoginForm) => {
-    fetch("/api/login", {
+  const onValid = async (validForm: LoginForm) => {
+    await fetch("/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -31,7 +32,7 @@ export default function LogIn() {
   };
 
   useEffect(() => {
-    if (data?.ok | result?.ok) {
+    if (result?.ok || data?.ok) {
       router.push("/");
     }
   }, [data, result, router]);
@@ -51,6 +52,11 @@ export default function LogIn() {
           <Button text="로그인"></Button>
         </div>
       </form>
+      <Link href="/create-account">
+        <a className=" text-center py-2 mt-3 rounded-md text-pink-300 border-[1px] border-pink-300 ">
+          <span className="">가입하기</span>
+        </a>
+      </Link>
     </div>
   );
 }
