@@ -15,15 +15,13 @@ interface TweetMutation {
   post: Tweet;
 }
 
-export default function WriteReply() {
+export default function Write() {
   const router = useRouter();
-  const tweetQuery = router.query || [];
   const { register, watch, handleSubmit } = useForm<onTweetForm>({
     mode: "onChange",
   });
-  const [mutation, { loading, data }] = useMutation<TweetMutation>(
-    `/api/write/${tweetQuery?.id}`
-  );
+  const [mutation, { loading, data }] =
+    useMutation<TweetMutation>("/api/write/");
   const onHandleTweet = async (onValidForm: onTweetForm) => {
     console.log(onValidForm);
     if (loading) return;
@@ -32,7 +30,7 @@ export default function WriteReply() {
 
   useEffect(() => {
     if (data && data?.ok) {
-      router.push(`/tweet/${tweetQuery?.id}`);
+      router.push(`/tweet/${data?.post?.id}`);
     }
   }, [data, router]);
 
