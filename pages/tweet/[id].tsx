@@ -26,7 +26,6 @@ export default function Home() {
   const { data } = useSWR<TweetDetailResponse>(
     router.query.id ? `/api/tweets/${router.query.id}` : null
   );
-  console.log(data);
   return (
     <Layout title="트윗" canGoBack hasSideBar>
       <div className="flex flex-col w-full max-w-2xl mx-auto pb-5">
@@ -105,18 +104,21 @@ export default function Home() {
           </button>
         </div>
         <div className="divide-y-[1px]">
-          {data?.replies.map((reply) => (
-            <TweetRow
-              key={reply?.id}
-              id={reply?.id}
-              name={reply?.user?.name}
-              userId={reply?.user?.userId}
-              time={reply?.createdAt.toString()}
-              favs={reply?._count?.favs}
-              answers={reply?._count?.answers}
-              tweet={reply?.tweet}
-            ></TweetRow>
-          ))}
+          {data?.replies
+            .slice(0)
+            .reverse()
+            .map((reply) => (
+              <TweetRow
+                key={reply?.id}
+                id={reply?.id}
+                name={reply?.user?.name}
+                userId={reply?.user?.userId}
+                time={reply?.createdAt.toString()}
+                favs={reply?._count?.favs}
+                answers={reply?._count?.answers}
+                tweet={reply?.tweet}
+              ></TweetRow>
+            ))}
         </div>
       </div>
     </Layout>

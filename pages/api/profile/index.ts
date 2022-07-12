@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import db from "../../lib/db";
+import db from "../../../lib/db";
 import { withIronSessionApiRoute } from "iron-session/next";
 
 declare module "iron-session" {
