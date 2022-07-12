@@ -37,7 +37,7 @@ export default function Home() {
           </div>
         </div>
         <div className="w-full px-5 pb-3 border-b-[1.5px]">
-          <p className="text-xl pb-3">
+          <p className="text-2xl text-gray-700 pb-3">
             Tesla’s automatic cabin overheat protection should make a real
             difference with record heatwaves. Ability to adjust activation
             temperature coming with next software release.
@@ -52,8 +52,8 @@ export default function Home() {
           <span className="font-bold">1000</span>
           <span className="text-gray-600 pl-1 pr-3">좋아요</span>
         </div>
-        <div className="flex justify-evenly text-gray-500 py-2 border-b-[1.5px]">
-          <button>
+        <div className="flex justify-evenly text-gray-500 py-1 border-b-[1.5px]">
+          <button className="transition-all ease-in-out duration-300 p-2 rounded-full hover:bg-pink-100 hover:text-pink-500">
             <svg
               className="w-6 h-6"
               fill="none"
@@ -69,7 +69,7 @@ export default function Home() {
               />
             </svg>
           </button>
-          <button>
+          <button className="transition-all ease-in-out duration-300 p-2 rounded-full hover:bg-red-100 hover:text-red-500">
             <svg
               className="w-6 h-6"
               fill="none"
