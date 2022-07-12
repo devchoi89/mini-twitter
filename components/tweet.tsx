@@ -10,7 +10,7 @@ interface TweetProps {
   answers: number;
 }
 
-export default function OneTweet({
+export default function TweetRow({
   name,
   userId,
   time,

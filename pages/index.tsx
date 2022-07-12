@@ -4,7 +4,7 @@ import Head from "next/head";
 import React from "react";
 import useSWR from "swr";
 import Layout from "../components/layout";
-import OneTweet from "../components/tweet";
+import TweetRow from "../components/tweet";
 
 interface TweetWithCount extends Tweet {
   _count: {
@@ -20,7 +20,7 @@ interface TweetsResponse {
 }
 
 export default function Home() {
-  const { data, error } = useSWR<TweetsResponse>("/api/tweets");
+  const { data } = useSWR<TweetsResponse>("/api/tweets");
   return (
     <Layout title="모든 트윗" canGoBack hasSideBar>
       <div className="flex flex-col w-full max-w-2xl mx-auto pb-5">
@@ -29,7 +29,7 @@ export default function Home() {
         </Head>
         <div className="divide-y-[1px]">
           {data?.tweets.map((tweet) => (
-            <OneTweet
+            <TweetRow
               key={tweet?.id}
               id={tweet?.id}
               name={tweet?.user.name}
@@ -38,7 +38,7 @@ export default function Home() {
               tweet={tweet?.tweet}
               favs={tweet?._count.favs}
               answers={tweet?._count.answers}
-            ></OneTweet>
+            ></TweetRow>
           ))}
         </div>
       </div>

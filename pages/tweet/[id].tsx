@@ -1,12 +1,32 @@
 //import { useState } from "react";
+import { Tweet, User } from "@prisma/client";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import React from "react";
+import useSWR from "swr";
 import Layout from "../../components/layout";
-import Tweet from "../../components/tweet";
-import useUser from "../../lib/useUser";
+import TweetRow from "../../components/tweet";
+
+interface TweetWithCount extends Tweet {
+  _count: {
+    favs: number;
+    answers: number;
+  };
+  user: User;
+}
+
+interface TweetDetailResponse {
+  ok: boolean;
+  tweet: TweetWithCount;
+  replies: TweetWithCount[];
+}
 
 export default function Home() {
-  const { user, isLoading } = useUser();
+  const router = useRouter();
+  const { data } = useSWR<TweetDetailResponse>(
+    router.query.id ? `/api/tweets/${router.query.id}` : null
+  );
+  console.log(data);
   return (
     <Layout title="트윗" canGoBack hasSideBar>
       <div className="flex flex-col w-full max-w-2xl mx-auto pb-5">
@@ -18,7 +38,7 @@ export default function Home() {
           <div>
             <div className="flex">
               <span className="font-bold pr-1 text-[15px] flex items-center">
-                Elon Musk
+                {data?.tweet?.user?.name}
                 <svg
                   className="w-5 h-5 ml-[2px] mt-[2px] text-sky-500"
                   fill="currentColor"
@@ -33,23 +53,21 @@ export default function Home() {
                 </svg>
               </span>
             </div>
-            <span className="pr-2 text-[15px]">@elonmusk</span>
+            <span className="pr-2 text-[15px]">
+              @{data?.tweet?.user?.userId}
+            </span>
           </div>
         </div>
         <div className="w-full px-5 pb-3 border-b-[1.5px]">
-          <p className="text-2xl text-gray-700 pb-3">
-            Tesla’s automatic cabin overheat protection should make a real
-            difference with record heatwaves. Ability to adjust activation
-            temperature coming with next software release.
-          </p>
+          <p className="text-2xl text-gray-700 pb-3">{data?.tweet?.tweet}</p>
           <span className="text-[15px] text-gray-600">
-            오전 10:23 · 2022년 7월 12일
+            {data?.tweet?.createdAt?.toString()}
           </span>
         </div>
         <div className="py-2 px-5 border-b-[1.5px] text-sm">
-          <span className="font-bold">1000</span>
+          <span className="font-bold">{data?.tweet?._count?.answers}</span>
           <span className="text-gray-600 pl-1 pr-3">답글</span>
-          <span className="font-bold">1000</span>
+          <span className="font-bold">{data?.tweet?._count?.favs}</span>
           <span className="text-gray-600 pl-1 pr-3">좋아요</span>
         </div>
         <div className="flex justify-evenly text-gray-500 py-1 border-b-[1.5px]">
@@ -87,17 +105,17 @@ export default function Home() {
           </button>
         </div>
         <div className="divide-y-[1px]">
-          {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
-            <Tweet
-              key={i}
-              id={1}
-              name={user?.name}
-              userId={user?.userId}
-              time={"5시간"}
-              tweet={
-                "These polar launches will enable complete coverage of Earth (where approved by local government)"
-              }
-            ></Tweet>
+          {data?.replies.map((reply) => (
+            <TweetRow
+              key={reply?.id}
+              id={reply?.id}
+              name={reply?.user?.name}
+              userId={reply?.user?.userId}
+              time={reply?.createdAt.toString()}
+              favs={reply?._count?.favs}
+              answers={reply?._count?.answers}
+              tweet={reply?.tweet}
+            ></TweetRow>
           ))}
         </div>
       </div>

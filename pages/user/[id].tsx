@@ -2,7 +2,7 @@
 import Head from "next/head";
 import React from "react";
 import Layout from "../../components/layout";
-import Tweet from "../../components/tweet";
+import TweetRow from "../../components/tweet";
 import useUser from "../../lib/useUser";
 
 export default function Home() {
@@ -34,16 +34,18 @@ export default function Home() {
         </div>
         <div className="divide-y-[1px]">
           {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
-            <Tweet
+            <TweetRow
               key={i}
               id={1}
               name={user?.name}
               userId={user?.userId}
               time={"5시간"}
+              favs={1}
+              answers={2}
               tweet={
                 "These polar launches will enable complete coverage of Earth (where approved by local government)"
               }
-            ></Tweet>
+            ></TweetRow>
           ))}
         </div>
       </div>
