@@ -6,12 +6,22 @@ interface TweetProps {
   time: string;
   tweet: string;
   id: number;
+  favs: number;
+  answers: number;
 }
 
-export default function Tweet({ name, userId, time, tweet, id }: TweetProps) {
+export default function OneTweet({
+  name,
+  userId,
+  time,
+  tweet,
+  id,
+  favs,
+  answers,
+}: TweetProps) {
   return (
     <Link href={`/tweet/${id}`}>
-      <div className="transition-all ease-in-out duration-300 cursor-pointer hover:bg-gray-50">
+      <div className="transition-all ease-in-out duration-300 cursor-pointer hover:bg-sky-50">
         <div className=" flex w-full px-5 pt-3">
           <div className="h-12 aspect-square rounded-full bg-gray-300 mr-3" />
           <div>
@@ -55,7 +65,7 @@ export default function Tweet({ name, userId, time, tweet, id }: TweetProps) {
                 />
               </svg>
             </button>
-            <span className="text-sm">33</span>
+            <span className="text-sm">{answers}</span>
           </div>
           <div className="flex items-center">
             <button className="transition-all ease-in-out duration-300 p-2 rounded-full hover:bg-red-100 hover:text-red-500 flex items-center">
@@ -74,7 +84,7 @@ export default function Tweet({ name, userId, time, tweet, id }: TweetProps) {
                 />
               </svg>
             </button>
-            <span className="text-sm">12</span>
+            <span className="text-sm">{favs}</span>
           </div>
         </div>
       </div>

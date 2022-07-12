@@ -7,11 +7,12 @@ import useUser from "../../lib/useUser";
 
 export default function Home() {
   const { user, isLoading } = useUser();
+  const headTitle = `${user?.name}님의 트위터`;
   return (
     <Layout title={user?.name} verified canGoBack hasSideBar>
       <div className="flex flex-col w-full max-w-2xl mx-auto pb-5">
         <Head>
-          <title>{user?.name}님의 트위터</title>
+          <title>{headTitle}</title>
         </Head>
         <div className="h-32 w-full bg-pink-300 flex justify-end items-start"></div>
 

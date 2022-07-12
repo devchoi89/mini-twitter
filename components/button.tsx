@@ -11,7 +11,7 @@ export default function Button({ text, ...rest }: ButtonProps) {
       type="submit"
       {...rest}
       className={cls(
-        "w-full text-white font-bold bg-pink-200 bg-opacity-100 p-2 rounded-md"
+        "w-full text-white font-bold bg-pink-300 bg-opacity-100 p-2 rounded-md"
       )}
     >
       {text}
