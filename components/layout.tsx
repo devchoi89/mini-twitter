@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import useUser from "../lib/useUser";
 import { cls } from "../lib/utils";
 
 interface LayoutProps {
   title?: string;
+  verified?: boolean;
   canGoBack?: boolean;
   hasSideBar?: boolean;
   children: React.ReactNode;
@@ -12,11 +14,13 @@ interface LayoutProps {
 
 export default function Layout({
   title,
+  verified,
   canGoBack,
   hasSideBar,
   children,
 }: LayoutProps) {
   const router = useRouter();
+  const { user, isLoading } = useUser();
   const [state, setState] = useState(false);
   const onClick = () => {
     router.back();
@@ -26,35 +30,30 @@ export default function Layout({
       setState(response.ok)
     );
   };
+
   useEffect(() => {
     if (state) {
       router.push("/");
     }
   }, [state, router]);
   return (
-    <div className="flex max-w-xl mx-auto">
+    <div className="flex max-w-2xl mx-auto">
       <div>
         {hasSideBar ? (
           <nav className="pt-5 space-y-3 bg-white max-w-[30px] flex flex-col items-center text-gray-700 w-full px-10 pb-5 pt-3text-xs">
             <Link href="/">
-              <a className="transition-all ease-in-out duration-500 p-3 rounded-full hover:bg-gray-100 fixed flex flex-col items-center space-y-2">
+              <a className="transition-all ease-in-out duration-500 p-3 rounded-full text-pink-400 hover:bg-pink-100 fixed flex flex-col items-center space-y-2">
                 <svg
                   className="w-7 h-7"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                  ></path>
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                 </svg>
               </a>
             </Link>
-            <Link href="/">
+            <Link href={`/${user?.userId}`}>
               <a className="transition-all ease-in-out duration-500 p-3 rounded-full hover:bg-gray-100 fixed top-16 flex flex-col items-center space-y-2">
                 <svg
                   className="w-7 h-7"
@@ -67,7 +66,7 @@ export default function Layout({
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                   />
                 </svg>
               </a>
@@ -94,10 +93,10 @@ export default function Layout({
           </nav>
         ) : null}
       </div>
-      <div className="w-full max-w-lg mx-auto border-x-[1px]">
+      <div className="w-full max-w-2xl mx-auto border-x-[1px]">
         <div
           className={cls(
-            "bg-white bg-opacity-90 w-full max-w-lg  text-xl font-bold py-2 fixed z-10 text-gray-700 top-0 flex pl-10 items-center"
+            "bg-white bg-opacity-90 w-full max-w-2xl  text-xl font-bold py-2 fixed z-10 text-gray-700 top-0 flex pl-10 items-center"
           )}
         >
           {canGoBack ? (
@@ -123,20 +122,22 @@ export default function Layout({
           {title ? (
             <div className="flex items-center">
               <span className="font-bold">{title}</span>
-              <span className="pt-1 pl-1 text-sky-500">
-                <svg
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </span>
+              {verified ? (
+                <span className="pt-1 pl-1 text-sky-500">
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </span>
+              ) : null}
             </div>
           ) : null}
         </div>

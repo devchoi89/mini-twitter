@@ -38,7 +38,7 @@ export default function LogIn() {
   }, [data, result, router]);
 
   return (
-    <div className="flex flex-col max-w-lg mx-auto py-10">
+    <div className="flex flex-col max-w-2xl mx-auto py-10">
       <h1 className="text-center text-2xl font-bold">미니 트위터</h1>
       <form className="flex flex-col mt-10" onSubmit={handleSubmit(onValid)}>
         <Input

@@ -41,7 +41,7 @@ export default function SignUp() {
   }, [result, router]);
 
   return (
-    <div className="flex flex-col max-w-lg mx-auto py-10">
+    <div className="flex flex-col max-w-2xl mx-auto py-10">
       <h1 className="text-center text-2xl font-bold mb-10">계정 만들기</h1>
       <form className="flex flex-col" onSubmit={handleSubmit(onValid)}>
         <div className="flex flex-col space-y-2">
