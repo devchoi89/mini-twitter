@@ -1,21 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import db from "../../../lib/db";
-import { withIronSessionApiRoute } from "iron-session/next";
-
-declare module "iron-session" {
-  interface IronSessionData {
-    user?: {
-      id: number;
-      userId: string;
-      email: string;
-    };
-  }
-}
-
-const cookieOptions = {
-  cookieName: "LogInSession",
-  password: "u^Yv/ZK>,H>9^GJ{s@N+5aT!w2B4=~QX_9r1=;eq",
-};
+import { withApiSession } from "../../../lib/withSession";
 
 async function profile(req: NextApiRequest, res: NextApiResponse) {
   const {
@@ -35,7 +20,7 @@ async function profile(req: NextApiRequest, res: NextApiResponse) {
     },
   });
 
-  if (!findUser) return res.status(400).json({ ok: false });
+  if (!findUser) return res.status(404).json({ ok: false });
 
   const tweets = await db.tweet.findMany({
     where: { userId: findUser?.id, parentId: null },
@@ -64,4 +49,4 @@ async function profile(req: NextApiRequest, res: NextApiResponse) {
   });
 }
 
-export default withIronSessionApiRoute(profile, cookieOptions);
+export default withApiSession(profile);

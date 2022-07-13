@@ -55,10 +55,22 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       },
     },
   });
+  const isTweetLiked = Boolean(
+    await db.fav.findFirst({
+      where: {
+        tweetId: +id.toString(),
+        userId: user?.id,
+      },
+      select: {
+        id: true,
+      },
+    })
+  );
   res.json({
     ok: true,
     replies,
     tweet,
+    isTweetLiked,
   });
 }
 

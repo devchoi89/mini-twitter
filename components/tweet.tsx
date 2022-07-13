@@ -1,8 +1,8 @@
-import { Tweet, User } from "@prisma/client";
+//import { Tweet, User } from "@prisma/client";
 import Link from "next/link";
-import useSWR, { useSWRConfig } from "swr";
-import useMutation from "../lib/useMutation";
-import useUser from "../lib/useUser";
+//import useSWR, { useSWRConfig } from "swr";
+//import useMutation from "../lib/useMutation";
+//import useUser from "../lib/useUser";
 
 interface TweetProps {
   name: string;
@@ -13,10 +13,12 @@ interface TweetProps {
   favs: number;
   answers: number;
   onclick: any;
+  ondeleteclick: any;
   isLiked: boolean;
+  isMyTweet: boolean;
 }
 
-interface TweetWithCount extends Tweet {
+/* interface TweetWithCount extends Tweet {
   _count: {
     favs: number;
     answers: number;
@@ -29,7 +31,7 @@ interface TweetDetailResponse {
   ok: boolean;
   tweet: TweetWithCount;
   replies: TweetWithCount[];
-}
+} */
 
 export default function TweetRow({
   name,
@@ -40,7 +42,9 @@ export default function TweetRow({
   favs,
   answers,
   onclick,
+  ondeleteclick,
   isLiked,
+  isMyTweet,
 }: TweetProps) {
   /*   const [mutation, { data, loading }] = useMutation("/api/like");
   const { mutate } = useSWRConfig();
@@ -57,13 +61,40 @@ export default function TweetRow({
   } */
   return (
     <Link href={`/tweet/${id}`}>
-      <div className="transition-all ease-in-out duration-300 cursor-pointer hover:bg-sky-50">
-        <div className=" flex w-full px-5 pt-3">
+      <div className="transition-all ease-in-out duration-300 cursor-pointer  px-5 pt-3 hover:bg-sky-50">
+        <div className="flex justify-end">
+          <Link href="javascript:;">
+            <>
+              {isMyTweet ? (
+                <button
+                  onClick={ondeleteclick}
+                  className="flex justify-center items-center absolute z-[5] h-6 w-6 rounded-md hover:border-[2px] hover:text-red-500 hover:bg-white  text-gray-500"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              ) : null}
+            </>
+          </Link>
+        </div>
+        <div className=" flex w-full">
           <Link href={`/${userId}`}>
             <div className="h-12 aspect-square rounded-full bg-gray-300 mr-3" />
           </Link>
-          <div>
-            <div className="flex">
+          <div className="relative flex flex-col">
+            <div className="flex relative w-full">
               <span className="font-bold pr-1 text-[15px] flex items-center">
                 <Link href={`/${userId}`}>
                   <a className="hover:underline">{name}</a>
@@ -109,7 +140,6 @@ export default function TweetRow({
                 </svg>
               </button>
             </Link>
-
             <span className="text-sm">{answers}</span>
           </div>
           <div className="flex items-center">
@@ -149,7 +179,6 @@ export default function TweetRow({
                 )}
               </button>
             </Link>
-
             <span className="text-sm">{favs}</span>
           </div>
         </div>

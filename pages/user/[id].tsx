@@ -30,8 +30,9 @@ export default function Home() {
   const { data } = useSWR<UserTweetsResponse>(
     router.query.id ? `/api/profile/${router.query.id}` : null
   );
+  console.log(data);
   const { mutate } = useSWRConfig();
-  const [mutation, { data: likeData, loading }] = useMutation("/api/like");
+  const [mutation, { loading }] = useMutation("/api/like");
   const [isMine, setIsMine] = useState(false);
   const headTitle = `${data?.findUser?.name}님의 트위터`;
   const { user } = useUser();
@@ -46,6 +47,14 @@ export default function Home() {
     mutate(`/api/profile/${router.query.id}`);
   }
 
+  async function onDeleteClick(tweetId: any) {
+    console.log(tweetId);
+    if (confirm("정말로 트윗을 지우시겠습니까?")) {
+      console.log("트윗 삭제됨");
+    } else {
+      console.log("트윗 삭제 취소");
+    }
+  }
   return (
     <Layout title={data?.findUser?.name} verified canGoBack hasSideBar>
       <div className="flex flex-col w-full max-w-2xl mx-auto pb-5">
@@ -84,6 +93,8 @@ export default function Home() {
             .reverse()
             .map((tweet) => (
               <TweetRow
+                ondeleteclick={() => onDeleteClick(tweet?.id)}
+                isMyTweet={user?.id === tweet?.userId}
                 onclick={() => onLike(tweet?.id)}
                 isLiked={user?.id === tweet?.favs[0]?.userId}
                 key={tweet?.id}

@@ -23,6 +23,7 @@ interface TweetDetailResponse {
   ok: boolean;
   tweet: TweetWithCount;
   replies: TweetWithCount[];
+  isTweetLiked: boolean;
 }
 
 export default function Home() {
@@ -32,17 +33,41 @@ export default function Home() {
   const { data, mutate: boundMutate } = useSWR<TweetDetailResponse>(
     router.query.id ? `/api/tweets/${router.query.id}` : null
   );
-  const [mutation, { data: likeData, loading }] = useMutation("/api/like");
-  function onMainLike(tweetId: any) {
-    if (!tweetId) return;
-    console.log(tweetId);
-    //mutation(tweetId);
+  const [mutation, { loading }] = useMutation("/api/like");
+
+  async function onMainLike(tweetId: any) {
+    if (loading) return;
+    await mutation(tweetId);
+    if (!data) return;
+    boundMutate(
+      {
+        ...data,
+        tweet: {
+          ...data?.tweet,
+          _count: {
+            ...data?.tweet?._count,
+            favs: data?.isTweetLiked
+              ? data?.tweet?._count?.favs - 1
+              : data?.tweet?._count?.favs + 1,
+          },
+        },
+        isTweetLiked: !data?.isTweetLiked,
+      },
+      false
+    );
   }
 
   async function onLike(tweetId: any) {
+    //const array = data?.replies?.find((reply) => reply.id === tweetId);
+    //console.log(array);
     if (loading) return;
     await mutation(tweetId);
+    if (!data) return;
     mutate(`/api/tweets/${router.query.id}`);
+  }
+
+  async function onDeleteClick(tweetId: any) {
+    console.log(tweetId);
   }
 
   return (
@@ -119,20 +144,35 @@ export default function Home() {
             onClick={() => onMainLike(data?.tweet?.id)}
             className="transition-all ease-in-out duration-300 p-2 rounded-full hover:bg-red-100 hover:text-red-500"
           >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-              />
-            </svg>
+            {data?.isTweetLiked ? (
+              <svg
+                className="w-6 h-6 text-red-500"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            ) : (
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
+            )}
           </button>
         </div>
         <div className="divide-y-[1px]">
@@ -141,6 +181,8 @@ export default function Home() {
             .reverse()
             .map((reply) => (
               <TweetRow
+                ondeleteclick={() => onDeleteClick(reply?.id)}
+                isMyTweet={user?.id === reply?.userId}
                 onclick={() => onLike(reply?.id)}
                 isLiked={user?.id === reply?.favs[0]?.userId}
                 key={reply?.id}

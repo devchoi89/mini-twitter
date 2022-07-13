@@ -1,21 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { withIronSessionApiRoute } from "iron-session/next";
 import db from "../../lib/db";
-
-declare module "iron-session" {
-  interface IronSessionData {
-    user?: {
-      id: number;
-      userId: string;
-      email: string;
-    };
-  }
-}
-
-const cookieOptions = {
-  cookieName: "LogInSession",
-  password: "u^Yv/ZK>,H>9^GJ{s@N+5aT!w2B4=~QX_9r1=;eq",
-};
+import { withApiSession } from "../../lib/withSession";
 
 async function Likes(req: NextApiRequest, res: NextApiResponse) {
   const {
@@ -25,7 +10,6 @@ async function Likes(req: NextApiRequest, res: NextApiResponse) {
 
   const tweet = await db.tweet.findUnique({
     where: {
-      //id가 배열일 수 있으므로 toString()
       id: +tweetId.toString(),
     },
     select: {
@@ -69,4 +53,4 @@ async function Likes(req: NextApiRequest, res: NextApiResponse) {
   });
 }
 
-export default withIronSessionApiRoute(Likes, cookieOptions);
+export default withApiSession(Likes);
