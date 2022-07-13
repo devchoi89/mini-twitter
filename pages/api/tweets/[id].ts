@@ -1,9 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import db from "../../../lib/db";
+import { withApiSession } from "../../../lib/withSession";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
     query: { id },
+    session: { user },
   } = req;
   const tweet = await db.tweet.findUnique({
     where: {
@@ -43,6 +45,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           answers: true,
         },
       },
+      favs: {
+        where: {
+          userId: user?.id,
+        },
+        select: {
+          userId: true,
+        },
+      },
     },
   });
   res.json({
@@ -52,4 +62,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   });
 }
 
-export default handler;
+export default withApiSession(handler);

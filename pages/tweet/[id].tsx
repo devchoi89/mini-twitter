@@ -1,11 +1,13 @@
 //import { useState } from "react";
 import { Tweet, User } from "@prisma/client";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import useSWR from "swr";
 import Layout from "../../components/layout";
 import TweetRow from "../../components/tweet";
+import useUser from "../../lib/useUser";
 
 interface TweetWithCount extends Tweet {
   _count: {
@@ -13,6 +15,7 @@ interface TweetWithCount extends Tweet {
     answers: number;
   };
   user: User;
+  favs: [{ userId: number }];
 }
 
 interface TweetDetailResponse {
@@ -23,9 +26,17 @@ interface TweetDetailResponse {
 
 export default function Home() {
   const router = useRouter();
+  const { user } = useUser();
   const { data } = useSWR<TweetDetailResponse>(
     router.query.id ? `/api/tweets/${router.query.id}` : null
   );
+
+  function onMainLike(tweetId: any) {
+    if (!tweetId) return;
+    console.log(tweetId);
+    //mutation(tweetId);
+  }
+
   return (
     <Layout title="트윗" canGoBack hasSideBar>
       <div className="flex flex-col w-full max-w-2xl mx-auto pb-5">
@@ -33,11 +44,17 @@ export default function Home() {
           <title>트윗</title>
         </Head>
         <div className="flex w-full px-5 py-3">
-          <div className="h-12 aspect-square rounded-full bg-gray-300 mr-3" />
+          <Link href={`/${data?.tweet?.user?.userId}`}>
+            <div className="cursor-pointer h-12 aspect-square rounded-full bg-gray-300 mr-3" />
+          </Link>
           <div>
             <div className="flex">
               <span className="font-bold pr-1 text-[15px] flex items-center">
-                {data?.tweet?.user?.name}
+                <span className="hover:underline">
+                  <Link href={`/${data?.tweet?.user?.userId}`}>
+                    <>{data?.tweet?.user?.name}</>
+                  </Link>
+                </span>
                 <svg
                   className="w-5 h-5 ml-[2px] mt-[2px] text-sky-500"
                   fill="currentColor"
@@ -70,23 +87,28 @@ export default function Home() {
           <span className="text-gray-600 pl-1 pr-3">좋아요</span>
         </div>
         <div className="flex justify-evenly text-gray-500 py-1 border-b-[1.5px]">
-          <button className="transition-all ease-in-out duration-300 p-2 rounded-full hover:bg-pink-100 hover:text-pink-500">
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-              />
-            </svg>
-          </button>
-          <button className="transition-all ease-in-out duration-300 p-2 rounded-full hover:bg-red-100 hover:text-red-500">
+          <Link href={`/write/${data?.tweet?.id}`}>
+            <button className="transition-all ease-in-out duration-300 p-2 rounded-full hover:bg-pink-100 hover:text-pink-500">
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                />
+              </svg>
+            </button>
+          </Link>
+          <button
+            onClick={() => onMainLike(data?.tweet?.id)}
+            className="transition-all ease-in-out duration-300 p-2 rounded-full hover:bg-red-100 hover:text-red-500"
+          >
             <svg
               className="w-6 h-6"
               fill="none"
@@ -109,6 +131,8 @@ export default function Home() {
             .reverse()
             .map((reply) => (
               <TweetRow
+                isLiked={user?.id === reply?.favs[0]?.userId}
+                onclick={reply?.id}
                 key={reply?.id}
                 id={reply?.id}
                 name={reply?.user?.name}

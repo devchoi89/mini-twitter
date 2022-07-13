@@ -19,12 +19,13 @@ const cookieOptions = {
 
 async function profile(req: NextApiRequest, res: NextApiResponse) {
   const {
+    session: { user },
     query: { id },
   } = req;
 
   if (!id) return res.status(400).json({ ok: false });
 
-  const user = await db.user.findUnique({
+  const findUser = await db.user.findUnique({
     where: { userId: id.toString() },
     select: {
       id: true,
@@ -34,10 +35,10 @@ async function profile(req: NextApiRequest, res: NextApiResponse) {
     },
   });
 
-  if (!user) return res.status(400).json({ ok: false });
+  if (!findUser) return res.status(400).json({ ok: false });
 
   const tweets = await db.tweet.findMany({
-    where: { userId: user?.id },
+    where: { userId: user?.id, parentId: null },
     include: {
       user: true,
       _count: {
@@ -46,12 +47,20 @@ async function profile(req: NextApiRequest, res: NextApiResponse) {
           answers: true,
         },
       },
+      favs: {
+        where: {
+          userId: user?.id,
+        },
+        select: {
+          userId: true,
+        },
+      },
     },
   });
   return res.json({
     ok: true,
     tweets,
-    user,
+    findUser,
   });
 }
 

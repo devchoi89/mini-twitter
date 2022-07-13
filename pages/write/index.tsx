@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../components/button";
 import Layout from "../../components/layout";
-import useMutation from "../api/useMutation";
+import useMutation from "../../lib/useMutation";
 
 interface onTweetForm {
   tweet: string;

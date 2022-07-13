@@ -21,6 +21,18 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             answers: true,
           },
         },
+        favs: {
+          where: {
+            userId: 1,
+          },
+          include: {
+            user: {
+              select: {
+                id: true,
+              },
+            },
+          },
+        },
       },
     });
     res.json({

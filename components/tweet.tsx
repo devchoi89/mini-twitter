@@ -1,4 +1,8 @@
+import { Tweet, User } from "@prisma/client";
 import Link from "next/link";
+import useSWR, { useSWRConfig } from "swr";
+import useMutation from "../lib/useMutation";
+import useUser from "../lib/useUser";
 
 interface TweetProps {
   name: string;
@@ -8,6 +12,23 @@ interface TweetProps {
   id: number;
   favs: number;
   answers: number;
+  onclick: any;
+  isLiked: boolean;
+}
+
+interface TweetWithCount extends Tweet {
+  _count: {
+    favs: number;
+    answers: number;
+  };
+  user: User;
+  favs: [{ userId: number }];
+}
+
+interface TweetDetailResponse {
+  ok: boolean;
+  tweet: TweetWithCount;
+  replies: TweetWithCount[];
 }
 
 export default function TweetRow({
@@ -18,16 +39,34 @@ export default function TweetRow({
   id,
   favs,
   answers,
+  onclick,
+  isLiked,
 }: TweetProps) {
+  const [mutation, { data, loading }] = useMutation("/api/like");
+  const { mutate } = useSWRConfig();
+  const { data: tweetData, mutate: boundMutate } = useSWR<TweetDetailResponse>(
+    `/api/tweets/${id}`
+  );
+  const { user } = useUser();
+  function onLike(tweetId: any) {
+    if (loading) return;
+    mutation(tweetId);
+    if (!tweetData) return;
+    mutate(`/api/tweets/${id}`);
+  }
   return (
     <Link href={`/tweet/${id}`}>
       <div className="transition-all ease-in-out duration-300 cursor-pointer hover:bg-sky-50">
         <div className=" flex w-full px-5 pt-3">
-          <div className="h-12 aspect-square rounded-full bg-gray-300 mr-3" />
+          <Link href={`/${userId}`}>
+            <div className="h-12 aspect-square rounded-full bg-gray-300 mr-3" />
+          </Link>
           <div>
             <div className="flex">
               <span className="font-bold pr-1 text-[15px] flex items-center">
-                {name}
+                <Link href={`/${userId}`}>
+                  <a className="hover:underline">{name}</a>
+                </Link>
                 <svg
                   className="w-5 h-5 ml-[2px] mt-[2px] text-sky-500"
                   fill="currentColor"
@@ -41,49 +80,75 @@ export default function TweetRow({
                   />
                 </svg>
               </span>
-              <span className="pr-2 text-[15px]">@{userId}</span>
+              <Link href={`/${userId}`}>
+                <span className="pr-2 text-[15px]">@{userId}</span>
+              </Link>
               <span className="text-[15px]">· {time}</span>
             </div>
-            <p className="text-[15px]">{tweet}</p>
+            <pre className="text-[15px] whitespace-pre-wrap">{tweet}</pre>
           </div>
         </div>
         <div className="flex justify-evenly  items-center pb-1 text-gray-500">
           <div className="flex items-center">
-            <button className="transition-all ease-in-out duration-300 p-2 rounded-full hover:bg-pink-100 hover:text-pink-400 flex items-center">
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                />
-              </svg>
-            </button>
+            <Link href={`/write/${id}`}>
+              <button className="transition-all ease-in-out duration-300 p-2 rounded-full hover:bg-pink-100 hover:text-pink-400 flex items-center">
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                  />
+                </svg>
+              </button>
+            </Link>
+
             <span className="text-sm">{answers}</span>
           </div>
           <div className="flex items-center">
-            <button className="transition-all ease-in-out duration-300 p-2 rounded-full hover:bg-red-100 hover:text-red-500 flex items-center">
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+            <Link href="javascript:;">
+              <button
+                onClick={() => onLike(onclick)}
+                className="transition-all ease-in-out duration-300 p-2 rounded-full hover:bg-red-100 hover:text-red-500 flex items-center"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                />
-              </svg>
-            </button>
+                {isLiked ? (
+                  <svg
+                    className="w-5 h-5  text-red-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                    />
+                  </svg>
+                )}
+              </button>
+            </Link>
+
             <span className="text-sm">{favs}</span>
           </div>
         </div>
