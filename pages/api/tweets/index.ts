@@ -1,7 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import db from "../../../lib/db";
+import { withApiSession } from "../../../lib/withSession";
 
-async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function HomeTweets(req: NextApiRequest, res: NextApiResponse) {
+  const {
+    session: { user },
+  } = req;
   if (req.method === "GET") {
     const tweets = await db.tweet.findMany({
       where: {
@@ -23,7 +27,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         },
         favs: {
           where: {
-            userId: 1,
+            userId: user?.id,
           },
           include: {
             user: {
@@ -42,4 +46,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default handler;
+export default withApiSession(HomeTweets);

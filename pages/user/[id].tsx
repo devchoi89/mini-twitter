@@ -4,9 +4,10 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import Layout from "../../components/layout";
 import TweetRow from "../../components/tweet";
+import useMutation from "../../lib/useMutation";
 import useUser from "../../lib/useUser";
 
 interface TweetsWithUser extends Tweet {
@@ -29,12 +30,22 @@ export default function Home() {
   const { data } = useSWR<UserTweetsResponse>(
     router.query.id ? `/api/profile/${router.query.id}` : null
   );
+  const { mutate } = useSWRConfig();
+  const [mutation, { data: likeData, loading }] = useMutation("/api/like");
   const [isMine, setIsMine] = useState(false);
   const headTitle = `${data?.findUser?.name}님의 트위터`;
   const { user } = useUser();
   useEffect(() => {
     setIsMine(router.query.id === user?.userId);
   }, [router.query, user]);
+
+  async function onLike(tweetId: any) {
+    console.log(tweetId);
+    if (loading) return;
+    await mutation(tweetId);
+    mutate(`/api/profile/${router.query.id}`);
+  }
+
   return (
     <Layout title={data?.findUser?.name} verified canGoBack hasSideBar>
       <div className="flex flex-col w-full max-w-2xl mx-auto pb-5">
@@ -73,8 +84,8 @@ export default function Home() {
             .reverse()
             .map((tweet) => (
               <TweetRow
-                isLiked={user?.id === tweet?.favs?.map((row) => row.userId)[0]}
-                onclick={tweet?.id}
+                onclick={() => onLike(tweet?.id)}
+                isLiked={user?.id === tweet?.favs[0]?.userId}
                 key={tweet?.id}
                 id={tweet?.id}
                 name={tweet?.user?.name}

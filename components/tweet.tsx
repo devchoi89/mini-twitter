@@ -42,18 +42,19 @@ export default function TweetRow({
   onclick,
   isLiked,
 }: TweetProps) {
-  const [mutation, { data, loading }] = useMutation("/api/like");
+  /*   const [mutation, { data, loading }] = useMutation("/api/like");
   const { mutate } = useSWRConfig();
   const { data: tweetData, mutate: boundMutate } = useSWR<TweetDetailResponse>(
     `/api/tweets/${id}`
-  );
-  const { user } = useUser();
-  function onLike(tweetId: any) {
+  ); */
+
+  /*   function onLike(tweetId: any) {
     if (loading) return;
     mutation(tweetId);
     if (!tweetData) return;
+    console.log(`/api/tweets/${id}`);
     mutate(`/api/tweets/${id}`);
-  }
+  } */
   return (
     <Link href={`/tweet/${id}`}>
       <div className="transition-all ease-in-out duration-300 cursor-pointer hover:bg-sky-50">
@@ -114,7 +115,7 @@ export default function TweetRow({
           <div className="flex items-center">
             <Link href="javascript:;">
               <button
-                onClick={() => onLike(onclick)}
+                onClick={onclick}
                 className="transition-all ease-in-out duration-300 p-2 rounded-full hover:bg-red-100 hover:text-red-500 flex items-center"
               >
                 {isLiked ? (

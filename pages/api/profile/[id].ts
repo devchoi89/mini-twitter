@@ -38,7 +38,7 @@ async function profile(req: NextApiRequest, res: NextApiResponse) {
   if (!findUser) return res.status(400).json({ ok: false });
 
   const tweets = await db.tweet.findMany({
-    where: { userId: user?.id, parentId: null },
+    where: { userId: findUser?.id, parentId: null },
     include: {
       user: true,
       _count: {

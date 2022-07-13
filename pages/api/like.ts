@@ -22,8 +22,6 @@ async function Likes(req: NextApiRequest, res: NextApiResponse) {
     body: tweetId,
     session: { user },
   } = req;
-  console.log(tweetId);
-  console.log(user);
 
   const tweet = await db.tweet.findUnique({
     where: {

@@ -4,9 +4,10 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import Layout from "../../components/layout";
 import TweetRow from "../../components/tweet";
+import useMutation from "../../lib/useMutation";
 import useUser from "../../lib/useUser";
 
 interface TweetWithCount extends Tweet {
@@ -27,14 +28,21 @@ interface TweetDetailResponse {
 export default function Home() {
   const router = useRouter();
   const { user } = useUser();
-  const { data } = useSWR<TweetDetailResponse>(
+  const { mutate } = useSWRConfig();
+  const { data, mutate: boundMutate } = useSWR<TweetDetailResponse>(
     router.query.id ? `/api/tweets/${router.query.id}` : null
   );
-
+  const [mutation, { data: likeData, loading }] = useMutation("/api/like");
   function onMainLike(tweetId: any) {
     if (!tweetId) return;
     console.log(tweetId);
     //mutation(tweetId);
+  }
+
+  async function onLike(tweetId: any) {
+    if (loading) return;
+    await mutation(tweetId);
+    mutate(`/api/tweets/${router.query.id}`);
   }
 
   return (
@@ -52,7 +60,9 @@ export default function Home() {
               <span className="font-bold pr-1 text-[15px] flex items-center">
                 <span className="hover:underline">
                   <Link href={`/${data?.tweet?.user?.userId}`}>
-                    <>{data?.tweet?.user?.name}</>
+                    <span className="cursor-pointer">
+                      {data?.tweet?.user?.name}
+                    </span>
                   </Link>
                 </span>
                 <svg
@@ -131,8 +141,8 @@ export default function Home() {
             .reverse()
             .map((reply) => (
               <TweetRow
+                onclick={() => onLike(reply?.id)}
                 isLiked={user?.id === reply?.favs[0]?.userId}
-                onclick={reply?.id}
                 key={reply?.id}
                 id={reply?.id}
                 name={reply?.user?.name}

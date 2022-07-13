@@ -1,10 +1,11 @@
 import { Tweet, User } from "@prisma/client";
 import Head from "next/head";
 import React from "react";
-import useSWR from "swr";
-import { textSpanIntersectsWithTextSpan } from "typescript";
+import useSWR, { SWRConfig, useSWRConfig } from "swr";
 import Layout from "../components/layout";
 import TweetRow from "../components/tweet";
+import useMutation from "../lib/useMutation";
+import useUser from "../lib/useUser";
 
 interface TweetWithCount extends Tweet {
   _count: {
@@ -21,7 +22,16 @@ interface TweetsResponse {
 }
 
 export default function Home() {
+  const { mutate } = useSWRConfig();
   const { data } = useSWR<TweetsResponse>("/api/tweets");
+  const { user } = useUser();
+  const [mutation, { data: likeData, loading }] = useMutation("/api/like");
+
+  async function onLike(tweetId: any) {
+    if (loading) return;
+    await mutation(tweetId);
+    mutate("/api/tweets");
+  }
 
   return (
     <Layout title="모든 트윗" canGoBack hasSideBar>
@@ -35,8 +45,8 @@ export default function Home() {
             .reverse()
             .map((tweet) => (
               <TweetRow
-                isLiked={false}
-                onclick={tweet?.id}
+                onclick={() => onLike(tweet?.id)}
+                isLiked={user?.id === tweet?.favs[0]?.userId}
                 key={tweet?.id}
                 id={tweet?.id}
                 name={tweet?.user.name}
