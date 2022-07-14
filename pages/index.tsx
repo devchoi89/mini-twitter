@@ -30,7 +30,8 @@ export default function Home() {
     if (loading) return;
     await mutation(tweetId);
     if (!data) return;
-    /*     let index = data?.tweets.findIndex((reply) => reply.id == tweetId);
+    let index = data?.tweets.findIndex((reply) => reply.id == tweetId);
+    /*   
     let value = Boolean(data?.tweets[index]?.favs[0]?.userId === user?.id);
     let newData = data;
     if (value) {
@@ -47,6 +48,7 @@ export default function Home() {
       },
       false
     ); */
+    console.log(data?.tweets[index]?.favs);
     mutate(
       {
         ...data,
@@ -57,7 +59,7 @@ export default function Home() {
                 favs: [
                   reply?.favs[0]?.userId === user?.id
                     ? { userId: 0 }
-                    : { userId: 2 },
+                    : { userId: user?.id },
                 ],
                 _count: {
                   ...reply?._count,

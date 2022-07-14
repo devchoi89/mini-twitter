@@ -71,7 +71,7 @@ export default function Home() {
                 favs: [
                   reply?.favs[0]?.userId === user?.id
                     ? { userId: 0 }
-                    : { userId: 2 },
+                    : { userId: user?.id },
                 ],
                 _count: {
                   ...reply?._count,

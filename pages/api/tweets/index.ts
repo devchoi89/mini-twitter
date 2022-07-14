@@ -29,12 +29,8 @@ async function HomeTweets(req: NextApiRequest, res: NextApiResponse) {
           where: {
             userId: user?.id,
           },
-          include: {
-            user: {
-              select: {
-                id: true,
-              },
-            },
+          select: {
+            userId: true,
           },
         },
       },
