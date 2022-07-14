@@ -33,6 +33,8 @@ export default function Home() {
     router.query.id ? `/api/tweets/${router.query.id}` : null
   );
   const [mutation, { loading }] = useMutation("/api/like");
+  const [deleteMutation, { loading: deleteLoading }] =
+    useMutation("/api/delete");
 
   async function onMainLike(tweetId: any) {
     if (loading) return;
@@ -106,8 +108,29 @@ export default function Home() {
     );
   }
 
+  async function onMainDeleteClick(tweetId: any) {
+    if (deleteLoading) return;
+    if (confirm("정말로 트윗을 지우시겠습니까?")) {
+      await deleteMutation(tweetId);
+      alert("트윗이 삭제되었습니다.");
+      if (!data) return;
+      router.push(`/${user?.userId}`);
+    } else {
+    }
+  }
+
   async function onDeleteClick(tweetId: any) {
-    console.log(tweetId);
+    if (deleteLoading) return;
+    if (confirm("정말로 트윗을 지우시겠습니까?")) {
+      await deleteMutation(tweetId);
+      alert("트윗이 삭제되었습니다.");
+      if (!data) return;
+      mutate(
+        { ...data, replies: data?.replies.filter((row) => row.id !== tweetId) },
+        false
+      );
+    } else {
+    }
   }
 
   return (
@@ -116,6 +139,27 @@ export default function Home() {
         <Head>
           <title>트윗</title>
         </Head>
+        <div className="flex justify-end pr-5">
+          <button
+            onClick={() => onMainDeleteClick(data?.tweet?.id)}
+            className="flex justify-center items-center absolute z-[10] h-6 w-6 rounded-md hover:border-[2px] hover:text-red-500 hover:bg-white  text-gray-500"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
         <div className="flex w-full px-5 py-3">
           <Link href={`/${data?.tweet?.user?.userId}`}>
             <div className="cursor-pointer h-12 aspect-square rounded-full bg-gray-300 mr-3" />

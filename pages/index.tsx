@@ -25,13 +25,16 @@ export default function Home() {
   const { data, mutate } = useSWR<TweetsResponse>("/api/tweets");
   const { user } = useUser();
   const [mutation, { loading }] = useMutation("/api/like");
+  const [deleteMutation, { loading: deleteLoading }] =
+    useMutation("/api/delete");
 
   async function onLike(tweetId: any) {
     if (loading) return;
     await mutation(tweetId);
     if (!data) return;
-    let index = data?.tweets.findIndex((reply) => reply.id == tweetId);
     /*   
+    let index = data?.tweets.findIndex((reply) => reply.id == tweetId);
+
     let value = Boolean(data?.tweets[index]?.favs[0]?.userId === user?.id);
     let newData = data;
     if (value) {
@@ -48,7 +51,6 @@ export default function Home() {
       },
       false
     ); */
-    console.log(data?.tweets[index]?.favs);
     mutate(
       {
         ...data,
@@ -77,7 +79,22 @@ export default function Home() {
   }
 
   async function onDeleteClick(tweetId: any) {
-    console.log(tweetId);
+    if (deleteLoading) return;
+    if (confirm("정말로 트윗을 지우시겠습니까?")) {
+      await deleteMutation(tweetId);
+      alert("트윗이 삭제되었습니다.");
+      //let index = data?.tweets.findIndex((reply) => reply.id == tweetId);
+      /*if (data?.ok)로 useMutation의 data.ok를 체크하면 안된다. 
+    data에 아직 데이터가 없기 때문에 undefined가 반환되기 때문. 
+    data.ok를 체크하려면 useEffect로 체크해야함 */
+      //data가 null이 아님을 체크해야 아래 tweets에 타입 에러가 발생하지 않음
+      if (!data) return;
+      mutate(
+        { ...data, tweets: data?.tweets.filter((row) => row.id !== tweetId) },
+        false
+      );
+    } else {
+    }
   }
 
   return (

@@ -31,6 +31,8 @@ export default function Home() {
     router.query.id ? `/api/profile/${router.query.id}` : null
   );
   const [mutation, { loading }] = useMutation("/api/like");
+  const [deleteMutation, { loading: deleteLoading }] =
+    useMutation("/api/delete");
   const [isMine, setIsMine] = useState(false);
   const headTitle = `${data?.findUser?.name}님의 트위터`;
   const { user } = useUser();
@@ -89,10 +91,16 @@ export default function Home() {
   }
 
   async function onDeleteClick(tweetId: any) {
+    if (deleteLoading) return;
     if (confirm("정말로 트윗을 지우시겠습니까?")) {
-      console.log("트윗 삭제됨");
+      await deleteMutation(tweetId);
+      alert("트윗이 삭제되었습니다.");
+      if (!data) return;
+      mutate(
+        { ...data, tweets: data?.tweets.filter((row) => row.id !== tweetId) },
+        false
+      );
     } else {
-      console.log("트윗 삭제 취소");
     }
   }
   return (
