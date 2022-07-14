@@ -109,10 +109,10 @@ export default function Home() {
         <Head>
           <title>{headTitle}</title>
         </Head>
-        <div className="h-32 w-full bg-pink-300 flex justify-end items-start"></div>
+        <div className="h-40 w-full bg-pink-300 flex justify-end items-start"></div>
 
         <div className="px-5">
-          <div className="w-24 aspect-square rounded-full border-4 border-white bg-gray-300 absolute top-32" />
+          <div className="w-28 aspect-square rounded-full border-4 border-white bg-gray-300 absolute top-40" />
           <div className="flex justify-end pt-3 pb-7 items-center">
             {isMine ? (
               <Link href="/write">
@@ -126,7 +126,23 @@ export default function Home() {
               </button>
             )}
           </div>
-          <h1 className="font-bold text-2xl">{data?.findUser?.name}</h1>
+          <h1 className="font-bold text-xl flex items-center">
+            <span>{data?.findUser?.name}</span>
+            <span className="pt-1 text-sky-500">
+              <svg
+                className="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </span>
+          </h1>
           <h1 className="text-gray-400">@{data?.findUser?.userId}</h1>
           <h1 className="text-sm pt-3 pb-5">
             가입일: {data?.findUser?.createAt?.toString()}

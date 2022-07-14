@@ -37,7 +37,7 @@ export default function Layout({
     }
   }, [state, router]);
   return (
-    <div className="flex max-w-2xl mx-auto  font-arial">
+    <div className="flex max-w-2xl mx-auto font-arial">
       <div>
         {hasSideBar ? (
           <nav className="pt-5 space-y-3 bg-white max-w-[30px] flex flex-col items-center text-gray-700 w-full px-10 pb-5 pt-3text-xs">
@@ -54,7 +54,7 @@ export default function Layout({
               </a>
             </Link>
             <Link href={`/${user?.userId}`}>
-              <a className="transition-all ease-in-out duration-500 p-3 rounded-full hover:bg-gray-100 fixed top-16 flex flex-col items-center space-y-2">
+              <a className="transition-all ease-in-out duration-500 p-3 rounded-full hover:bg-gray-200 fixed top-16 flex flex-col items-center space-y-2">
                 <svg
                   className="w-7 h-7"
                   fill="none"
@@ -73,7 +73,7 @@ export default function Layout({
             </Link>
             <button
               onClick={onLogoutClick}
-              className="transition-all ease-in-out duration-500 p-3 rounded-full hover:bg-gray-100 fixed top-[7.5rem] flex flex-col justify-center items-center"
+              className="transition-all ease-in-out duration-500 p-3 rounded-full hover:bg-gray-200 fixed top-[7.5rem] flex flex-col justify-center items-center"
             >
               <svg
                 className="w-7 h-7"
@@ -96,11 +96,14 @@ export default function Layout({
       <div className="w-full max-w-2xl mx-auto border-x-[1px]">
         <div
           className={cls(
-            "bg-white bg-opacity-90 w-full max-w-2xl  text-xl font-bold py-2 fixed z-10 text-gray-700 top-0 flex pl-10 items-center"
+            "bg-white bg-opacity-90 w-full max-w-[36.9rem]  text-xl font-bold py-3 fixed z-10 text-gray-700 top-0 flex pl-10 items-center"
           )}
         >
           {canGoBack ? (
-            <button onClick={onClick} className="absolute left-1">
+            <button
+              onClick={onClick}
+              className="transition-all ease-in-out duration-300 p-2 rounded-full hover:bg-gray-200 flex flex-col justify-center items-center absolute left-2"
+            >
               <span>
                 <svg
                   className="w-6 h-6"
@@ -120,7 +123,7 @@ export default function Layout({
             </button>
           ) : null}
           {title ? (
-            <div className="flex items-center">
+            <div className="flex items-center pl-3">
               <span className="font-bold">{title}</span>
               {verified ? (
                 <span className="pt-1 pl-1 text-sky-500">
@@ -141,7 +144,7 @@ export default function Layout({
             </div>
           ) : null}
         </div>
-        <div className={cls("pt-11")}>{children}</div>
+        <div className={cls("pt-14")}>{children}</div>
       </div>
     </div>
   );

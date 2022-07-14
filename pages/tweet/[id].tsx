@@ -139,27 +139,30 @@ export default function Home() {
         <Head>
           <title>트윗</title>
         </Head>
-        <div className="flex justify-end pr-5">
-          <button
-            onClick={() => onMainDeleteClick(data?.tweet?.id)}
-            className="flex justify-center items-center absolute z-[10] h-6 w-6 rounded-md hover:border-[2px] hover:text-red-500 hover:bg-white  text-gray-500"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+        {user?.id === data?.tweet?.userId ? (
+          <div className="flex justify-end pr-5">
+            <button
+              onClick={() => onMainDeleteClick(data?.tweet?.id)}
+              className="flex justify-center items-center absolute z-[10] h-6 w-6 rounded-md hover:border-[2px] hover:text-red-500 hover:bg-white  text-gray-500"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        ) : null}
+
         <div className="flex w-full px-5 py-3">
           <Link href={`/${data?.tweet?.user?.userId}`}>
             <div className="cursor-pointer h-12 aspect-square rounded-full bg-gray-300 mr-3" />
@@ -194,7 +197,7 @@ export default function Home() {
           </div>
         </div>
         <div className="w-full px-5 pb-3 border-b-[1.5px]">
-          <pre className="text-2xl whitespace-pre-wrap">
+          <pre className="text-2xl whitespace-pre-wrap space-y-1">
             {data?.tweet?.tweet}
           </pre>
           <span className="text-[15px] text-gray-600">
