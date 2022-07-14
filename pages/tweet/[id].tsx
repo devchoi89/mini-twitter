@@ -4,7 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 import Layout from "../../components/layout";
 import TweetRow from "../../components/tweet";
 import useMutation from "../../lib/useMutation";
@@ -16,7 +16,7 @@ interface TweetWithCount extends Tweet {
     answers: number;
   };
   user: User;
-  favs: [{ userId: number }];
+  favs: [{ userId: any }];
 }
 
 interface TweetDetailResponse {
@@ -29,8 +29,7 @@ interface TweetDetailResponse {
 export default function Home() {
   const router = useRouter();
   const { user } = useUser();
-  const { mutate } = useSWRConfig();
-  const { data, mutate: boundMutate } = useSWR<TweetDetailResponse>(
+  const { data, mutate } = useSWR<TweetDetailResponse>(
     router.query.id ? `/api/tweets/${router.query.id}` : null
   );
   const [mutation, { loading }] = useMutation("/api/like");
@@ -39,7 +38,7 @@ export default function Home() {
     if (loading) return;
     await mutation(tweetId);
     if (!data) return;
-    boundMutate(
+    mutate(
       {
         ...data,
         tweet: {
@@ -58,12 +57,26 @@ export default function Home() {
   }
 
   async function onLike(tweetId: any) {
-    //const array = data?.replies?.find((reply) => reply.id === tweetId);
-    //console.log(array);
     if (loading) return;
     await mutation(tweetId);
     if (!data) return;
-    mutate(`/api/tweets/${router.query.id}`);
+    let index = data?.replies.findIndex((reply) => reply.id == tweetId);
+    let value = Boolean(data?.replies[index]?.favs[0]?.userId === user?.id);
+    let newData = data;
+    if (value) {
+      newData.replies[index].favs[0] = { userId: 0 };
+      newData.replies[index]._count.favs -= 1;
+    } else {
+      newData.replies[index].favs[0] = { userId: user?.id };
+      newData.replies[index]._count.favs += 1;
+    }
+    mutate(
+      {
+        ...data,
+        replies: newData.replies,
+      },
+      false
+    );
   }
 
   async function onDeleteClick(tweetId: any) {

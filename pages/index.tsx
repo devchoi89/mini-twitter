@@ -1,7 +1,7 @@
 import { Tweet, User } from "@prisma/client";
 import Head from "next/head";
 import React from "react";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 import Layout from "../components/layout";
 import TweetRow from "../components/tweet";
 import useMutation from "../lib/useMutation";
@@ -22,15 +22,31 @@ interface TweetsResponse {
 }
 
 export default function Home() {
-  const { mutate } = useSWRConfig();
-  const { data } = useSWR<TweetsResponse>("/api/tweets");
+  const { data, mutate } = useSWR<TweetsResponse>("/api/tweets");
   const { user } = useUser();
   const [mutation, { loading }] = useMutation("/api/like");
 
   async function onLike(tweetId: any) {
     if (loading) return;
     await mutation(tweetId);
-    mutate("/api/tweets");
+    if (!data) return;
+    let index = data?.tweets.findIndex((reply) => reply.id == tweetId);
+    let value = Boolean(data?.tweets[index]?.favs[0]?.userId === user?.id);
+    let newData = data;
+    if (value) {
+      newData.tweets[index].favs[0] = { userId: 0 };
+      newData.tweets[index]._count.favs -= 1;
+    } else {
+      newData.tweets[index].favs[0] = { userId: user?.id };
+      newData.tweets[index]._count.favs += 1;
+    }
+    mutate(
+      {
+        ...data,
+        tweets: newData.tweets,
+      },
+      false
+    );
   }
 
   async function onDeleteClick(tweetId: any) {

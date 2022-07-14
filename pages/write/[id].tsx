@@ -25,7 +25,6 @@ export default function WriteReply() {
     `/api/write/${tweetQuery?.id}`
   );
   const onHandleTweet = async (onValidForm: onTweetForm) => {
-    console.log(onValidForm);
     if (loading) return;
     mutation(onValidForm);
   };

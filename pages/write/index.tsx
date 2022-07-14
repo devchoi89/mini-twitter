@@ -23,7 +23,6 @@ export default function Write() {
   const [mutation, { loading, data }] =
     useMutation<TweetMutation>("/api/write/");
   const onHandleTweet = async (onValidForm: onTweetForm) => {
-    console.log(onValidForm);
     if (loading) return;
     mutation(onValidForm);
   };

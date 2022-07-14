@@ -17,7 +17,6 @@ async function Write(req: NextApiRequest, res: NextApiResponse) {
       },
     },
   });
-  console.log(post);
   res.json({
     ok: true,
     post,

@@ -6,7 +6,6 @@ export default async function Create(
   res: NextApiResponse
 ) {
   const { name, userId, email } = req.body;
-  console.log(req.body);
 
   if (!name || !email || !userId) return res.status(400).json({ ok: false });
 
@@ -21,7 +20,6 @@ export default async function Create(
     },
     update: {},
   });
-  console.log(user);
   return res.json({
     ok: true,
   });

@@ -20,7 +20,6 @@ export default function SignUp() {
     formState: { errors },
     watch,
   } = useForm<SignUpForm>({ mode: "onChange" });
-  console.log(watch);
   const onValid = (validForm: SignUpForm) => {
     fetch("/api/create", {
       method: "POST",

@@ -4,7 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 import Layout from "../../components/layout";
 import TweetRow from "../../components/tweet";
 import useMutation from "../../lib/useMutation";
@@ -27,11 +27,9 @@ interface UserTweetsResponse {
 
 export default function Home() {
   const router = useRouter();
-  const { data } = useSWR<UserTweetsResponse>(
+  const { data, mutate } = useSWR<UserTweetsResponse>(
     router.query.id ? `/api/profile/${router.query.id}` : null
   );
-  console.log(data);
-  const { mutate } = useSWRConfig();
   const [mutation, { loading }] = useMutation("/api/like");
   const [isMine, setIsMine] = useState(false);
   const headTitle = `${data?.findUser?.name}님의 트위터`;
@@ -41,14 +39,29 @@ export default function Home() {
   }, [router.query, user]);
 
   async function onLike(tweetId: any) {
-    console.log(tweetId);
     if (loading) return;
     await mutation(tweetId);
-    mutate(`/api/profile/${router.query.id}`);
+    if (!data) return;
+    let index = data?.tweets.findIndex((reply) => reply.id == tweetId);
+    let value = Boolean(data?.tweets[index]?.favs[0]?.userId === user?.id);
+    let newData = data;
+    if (value) {
+      newData.tweets[index].favs[0] = { userId: 0 };
+      newData.tweets[index]._count.favs -= 1;
+    } else {
+      newData.tweets[index].favs[0] = { userId: user?.id };
+      newData.tweets[index]._count.favs += 1;
+    }
+    mutate(
+      {
+        ...data,
+        tweets: newData.tweets,
+      },
+      false
+    );
   }
 
   async function onDeleteClick(tweetId: any) {
-    console.log(tweetId);
     if (confirm("정말로 트윗을 지우시겠습니까?")) {
       console.log("트윗 삭제됨");
     } else {
