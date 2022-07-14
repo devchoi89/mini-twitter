@@ -60,7 +60,8 @@ export default function Home() {
     if (loading) return;
     await mutation(tweetId);
     if (!data) return;
-    let index = data?.replies.findIndex((reply) => reply.id == tweetId);
+    //data를 수정된 newData로 바꾼다.
+    /*     let index = data?.replies.findIndex((reply) => reply.id == tweetId);
     let value = Boolean(data?.replies[index]?.favs[0]?.userId === user?.id);
     let newData = data;
     if (value) {
@@ -69,11 +70,37 @@ export default function Home() {
     } else {
       newData.replies[index].favs[0] = { userId: user?.id };
       newData.replies[index]._count.favs += 1;
-    }
+    } 
     mutate(
       {
         ...data,
-        replies: newData.replies,
+        tweets: newData.tweets,
+      },
+      false
+    );
+    */
+    mutate(
+      {
+        ...data,
+        replies: data?.replies?.map((reply) =>
+          reply.id === tweetId
+            ? {
+                ...reply,
+                favs: [
+                  reply?.favs[0]?.userId === user?.id
+                    ? { userId: 0 }
+                    : { userId: 2 },
+                ],
+                _count: {
+                  ...reply?._count,
+                  favs:
+                    reply?.favs[0]?.userId === user?.id
+                      ? reply?._count.favs - 1
+                      : reply?._count.favs + 1,
+                },
+              }
+            : reply
+        ),
       },
       false
     );

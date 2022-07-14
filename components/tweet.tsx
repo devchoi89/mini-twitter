@@ -68,7 +68,7 @@ export default function TweetRow({
               {isMyTweet ? (
                 <button
                   onClick={ondeleteclick}
-                  className="flex justify-center items-center absolute z-[5] h-6 w-6 rounded-md hover:border-[2px] hover:text-red-500 hover:bg-white  text-gray-500"
+                  className="flex justify-center items-center absolute z-[10] h-6 w-6 rounded-md hover:border-[2px] hover:text-red-500 hover:bg-white  text-gray-500"
                 >
                   <svg
                     className="w-4 h-4"

@@ -42,7 +42,8 @@ export default function Home() {
     if (loading) return;
     await mutation(tweetId);
     if (!data) return;
-    let index = data?.tweets.findIndex((reply) => reply.id == tweetId);
+
+    /*     let index = data?.tweets.findIndex((reply) => reply.id == tweetId);
     let value = Boolean(data?.tweets[index]?.favs[0]?.userId === user?.id);
     let newData = data;
     if (value) {
@@ -56,6 +57,32 @@ export default function Home() {
       {
         ...data,
         tweets: newData.tweets,
+      },
+      false
+    ); */
+
+    mutate(
+      {
+        ...data,
+        tweets: data?.tweets?.map((reply) =>
+          reply.id === tweetId
+            ? {
+                ...reply,
+                favs: [
+                  reply?.favs[0]?.userId === user?.id
+                    ? { userId: 0 }
+                    : { userId: 2 },
+                ],
+                _count: {
+                  ...reply?._count,
+                  favs:
+                    reply?.favs[0]?.userId === user?.id
+                      ? reply?._count.favs - 1
+                      : reply?._count.favs + 1,
+                },
+              }
+            : reply
+        ),
       },
       false
     );
