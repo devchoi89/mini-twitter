@@ -64,29 +64,29 @@ export default function TweetRow({
       <div className="transition-all ease-in-out duration-300 cursor-pointer  px-5 pt-3 hover:bg-sky-50">
         <div className="flex justify-end">
           <Link href="javascript:;">
-            <>
-              {isMyTweet ? (
-                <button
-                  onClick={ondeleteclick}
-                  className="flex justify-center items-center absolute z-[10] h-6 w-6 rounded-md hover:border-[2px] hover:text-red-500 hover:bg-white  text-gray-500"
+            {isMyTweet ? (
+              <button
+                onClick={ondeleteclick}
+                className="flex justify-center items-center absolute z-[10] h-6 w-6 rounded-md hover:border-[2px] hover:text-red-500 hover:bg-white  text-gray-500"
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              ) : null}
-            </>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            ) : (
+              <></>
+            )}
           </Link>
         </div>
         <div className=" flex w-full">
