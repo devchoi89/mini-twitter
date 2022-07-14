@@ -32,7 +32,7 @@ export default function LogIn() {
   };
 
   useEffect(() => {
-    if (result?.ok || data?.ok) {
+    if (result?.ok) {
       router.push("/");
     }
   }, [data, result, router]);

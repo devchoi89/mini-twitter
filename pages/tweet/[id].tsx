@@ -194,7 +194,9 @@ export default function Home() {
           </div>
         </div>
         <div className="w-full px-5 pb-3 border-b-[1.5px]">
-          <p className="text-2xl text-gray-700 pb-3">{data?.tweet?.tweet}</p>
+          <pre className="text-2xl whitespace-pre-wrap">
+            {data?.tweet?.tweet}
+          </pre>
           <span className="text-[15px] text-gray-600">
             {data?.tweet?.createdAt?.toString()}
           </span>

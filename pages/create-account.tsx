@@ -14,12 +14,7 @@ interface SignUpForm {
 export default function SignUp() {
   const router = useRouter();
   const [result, setResult] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm<SignUpForm>({ mode: "onChange" });
+  const { register, handleSubmit } = useForm<SignUpForm>({ mode: "onChange" });
   const onValid = (validForm: SignUpForm) => {
     fetch("/api/create", {
       method: "POST",

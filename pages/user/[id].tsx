@@ -135,7 +135,7 @@ export default function Home() {
             <div></div>
           </div>
         </div>
-        <div className="divide-y-[1px]">
+        <div className="divide-y-[1px] border-t-[1px]">
           {data?.tweets
             ?.slice(0)
             .reverse()

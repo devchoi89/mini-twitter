@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import Button from "../../components/button";
 import Layout from "../../components/layout";
 import useMutation from "../../lib/useMutation";
+import { cls } from "../../lib/utils";
 
 interface onTweetForm {
   tweet: string;
@@ -49,9 +50,33 @@ export default function WriteReply() {
           })}
           required
           placeholder="트윗 내용"
-          className="w-full h-52 p-2"
+          className={cls(
+            "w-full h-52 p-2 border-2 border-white rounded-md bg-gray-200 focus:bg-white",
+            watch("tweet")?.length > 140
+              ? " focus:outline-red-500  border-red-500"
+              : ""
+          )}
         ></textarea>
-        <Button text="트윗하기"></Button>
+        <div className="mb-2 flex justify-end">
+          <span
+            className={cls(
+              "pr-1",
+              watch("tweet")?.length > 140 ? "text-red-500" : ""
+            )}
+          >
+            {watch("tweet")?.length}
+          </span>
+          <span className="font-sm text-sm">/140</span>
+        </div>
+        <button
+          type="submit"
+          className={cls(
+            "w-full cursor-pointer text-white font-bold bg-pink-300 bg-opacity-100 p-2 rounded-md",
+            watch("tweet")?.length > 140 ? "bg-opacity-50" : ""
+          )}
+        >
+          트윗하기
+        </button>
       </form>
     </Layout>
   );
