@@ -3,12 +3,3 @@
 @tailwind utilities;
 
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap");
-
-body {
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.5),
-      rgba(255, 255, 255, 0.5)
-    ),
-    url("https://www.ghibli.jp/images/umi1.jpg");
-  background-attachment: fixed;
-}

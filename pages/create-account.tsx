@@ -9,13 +9,19 @@ interface SignUpForm {
   name: string;
   userId: string;
   email: string;
-  erorr?: string;
+  error?: string;
 }
 
 export default function SignUp() {
   const router = useRouter();
   const [result, setResult] = useState(false);
-  const { register, handleSubmit } = useForm<SignUpForm>({ mode: "onChange" });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignUpForm>({
+    mode: "onChange",
+  });
   const onValid = (validForm: SignUpForm) => {
     fetch("/api/create", {
       method: "POST",
@@ -46,24 +52,48 @@ export default function SignUp() {
             <Input
               type="text"
               kind="text"
-              placeholder="이름"
-              register={register("name")}
-              required
+              label="이름"
+              register={register("name", {
+                required: "이름을 입력해 주세요.",
+                validate: {
+                  notEmail: (value) =>
+                    !(value.search(/^\s/) > -1 || value.search(/\s$/) > -1) ||
+                    "아이디의 시작과 끝에는 공백이 없어야 합니다.",
+                },
+              })}
             ></Input>
+            <span className="text-xs text-red-500">{errors.name?.message}</span>
             <Input
               type="text"
               kind="text"
-              placeholder="아이디"
-              register={register("userId")}
-              required
+              label="아이디"
+              register={register("userId", {
+                required: "아이디를 입력해 주세요.",
+                validate: {
+                  onlyNumAndEng: (value) =>
+                    value.search(/[\W]/g) === -1 ||
+                    "영문자 또는 숫자만 입력해주세요.",
+                },
+              })}
             ></Input>
+            <span className="text-xs text-red-500">
+              {errors.userId?.message}
+            </span>
             <Input
-              type="email"
+              type="text"
               kind="text"
-              placeholder="이메일"
-              register={register("email")}
-              required
+              label="이메일"
+              register={register("email", {
+                required: "이메일을 입력해주세요.",
+                validate: {
+                  notEmail: (value) =>
+                    value.search(/^\S+@\S+$/) > -1 || "이메일을 입력해주세요.",
+                },
+              })}
             ></Input>
+            <span className="text-xs text-red-500">
+              {errors.email?.message}
+            </span>
           </div>
           <div className="mt-5">
             <Button text="가입하기"></Button>
