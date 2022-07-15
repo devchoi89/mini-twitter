@@ -41,7 +41,7 @@ export default function Layout({
     }
   }, [state, router]);
   return (
-    <div className="flex max-w-2xl mx-auto font-arial">
+    <div className="flex max-w-2xl mx-auto font-arial bg-white min-h-screen">
       <div>
         {hasSideBar ? (
           <nav className="pt-5 space-y-3 bg-white max-w-[30px] flex flex-col items-center text-gray-700 w-full px-10 pb-5 pt-3text-xs">

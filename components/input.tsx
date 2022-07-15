@@ -23,7 +23,7 @@ export default function Input({
           type={type}
           placeholder={placeholder}
           required={required}
-          className="transition-all ease-in-out duration-500 outline-none focus:border-red-300 bg-gray-100 focus:bg-white w-full p-2 rounded-md border-2 border-gray-100"
+          className="transition-all duration-500 outline-none  focus:border-red-300 bg-gray-100 focus:bg-white w-full focus:p-3 p-3 rounded-lg border-2 border-gray-100"
         />
       ) : null}
     </div>
