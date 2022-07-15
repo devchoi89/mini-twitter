@@ -104,19 +104,25 @@ export default function Home() {
     }
   }
   return (
-    <Layout title={data?.findUser?.name} verified canGoBack hasSideBar>
+    <Layout
+      isMine={data?.findUser?.id === user?.id}
+      title={data?.findUser?.name}
+      verified
+      canGoBack
+      hasSideBar
+    >
       <div className="flex flex-col w-full max-w-2xl mx-auto pb-5">
         <Head>
           <title>{headTitle}</title>
         </Head>
-        <div className="h-40 w-full bg-pink-300 flex justify-end items-start"></div>
+        <div className="h-40 w-full bg-cover  bg-center flex justify-end items-start bg-[url(https://www.ghibli.jp/gallery/umi005.jpg)]" />
 
         <div className="px-5">
-          <div className="w-28 aspect-square rounded-full border-4 border-white bg-gray-300 absolute top-40" />
+          <div className="w-28 aspect-square rounded-full border-4 border-white bg-gray-300 absolute top-40 bg-cover bg-center bg-[url(https://www.ghibli.jp/gallery/umi007.jpg)]" />
           <div className="flex justify-end pt-3 pb-7 items-center">
             {isMine ? (
               <Link href="/write">
-                <button className="transition-all ease-in-out delay-50 border text-pink-400 border-pink-400 hover:bg-pink-300 hover:border-white hover:text-white py-1 px-4 rounded-r-full rounded-l-full text-sm font-bold duration-300">
+                <button className="transition-all ease-in-out delay-50 border text-pink-400 border-pink-400 hover:bg-indigo-300 hover:border-white hover:text-white py-1 px-4 rounded-r-full rounded-l-full text-sm font-bold duration-300">
                   <span>글쓰기</span>
                 </button>
               </Link>

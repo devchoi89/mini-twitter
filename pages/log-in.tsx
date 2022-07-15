@@ -38,7 +38,7 @@ export default function LogIn() {
   }, [data, result, router]);
 
   return (
-    <div className="bg-transparent h-screen w-screen flex justify-center items-center">
+    <div className="bg-transparent h-screen w-screen flex justify-center items-center  bg-gradient-to-b from-indigo-200 to-pink-200">
       <div className="bg-white rounded-lg shadow-2xl flex flex-col justify-center w-full max-w-2xl mx-auto px-28 py-40 ">
         <h1 className="text-center text-5xl font-bold">미니 트위터</h1>
         <form className="flex flex-col my-20" onSubmit={handleSubmit(onValid)}>

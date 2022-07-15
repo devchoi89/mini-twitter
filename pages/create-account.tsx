@@ -14,7 +14,7 @@ interface SignUpForm {
 
 export default function SignUp() {
   const router = useRouter();
-  const [result, setResult] = useState(false);
+  const [result, setResult] = useState();
   const {
     register,
     handleSubmit,
@@ -33,17 +33,16 @@ export default function SignUp() {
       .then((response) => response.json())
       .then((data) => setResult(data?.ok));
   };
-
   useEffect(() => {
-    if (result) {
+    if (result === true) {
       alert("가입 성공!");
       router.push("/log-in");
     }
   }, [result, router]);
 
   return (
-    <div className="bg-transparent h-screen w-screen flex justify-center items-center">
-      <div className="bg-white rounded-lg shadow-2xl flex flex-col justify-center w-full max-w-2xl mx-auto px-28 py-40 ">
+    <div className=" h-screen w-screen flex justify-center items-center  bg-gradient-to-b from-indigo-200 to-pink-200">
+      <div className=" bg-white rounded-2xl shadow-2xl flex flex-col justify-center w-full max-w-2xl mx-auto px-28 py-40 ">
         <h1 className="text-center text-4xl font-bold mb-10">
           지금 바로 가입하세요
         </h1>
@@ -54,11 +53,11 @@ export default function SignUp() {
               kind="text"
               label="이름"
               register={register("name", {
-                required: "이름을 입력해 주세요.",
+                required: "!이름을 입력해 주세요",
                 validate: {
                   notEmail: (value) =>
                     !(value.search(/^\s/) > -1 || value.search(/\s$/) > -1) ||
-                    "아이디의 시작과 끝에는 공백이 없어야 합니다.",
+                    "!아이디의 시작과 끝에는 공백이 없어야 합니다",
                 },
               })}
             ></Input>
@@ -68,26 +67,33 @@ export default function SignUp() {
               kind="text"
               label="아이디"
               register={register("userId", {
-                required: "아이디를 입력해 주세요.",
+                required: "!아이디를 입력해 주세요",
                 validate: {
                   onlyNumAndEng: (value) =>
                     value.search(/[\W]/g) === -1 ||
-                    "영문자 또는 숫자만 입력해주세요.",
+                    "!영문자 또는 숫자만 입력해주세요",
                 },
               })}
             ></Input>
-            <span className="text-xs text-red-500">
-              {errors.userId?.message}
-            </span>
+            <div>
+              {result === false ? (
+                <span className="text-xs text-red-500">
+                  !중복된 아이디입니다
+                </span>
+              ) : null}
+              <span className="text-xs text-red-500">
+                {errors.userId?.message}
+              </span>
+            </div>
             <Input
               type="text"
               kind="text"
               label="이메일"
               register={register("email", {
-                required: "이메일을 입력해주세요.",
+                required: "!이메일을 입력해주세요",
                 validate: {
                   notEmail: (value) =>
-                    value.search(/^\S+@\S+$/) > -1 || "이메일을 입력해주세요.",
+                    value.search(/^\S+@\S+$/) > -1 || "!이메일을 입력해주세요",
                 },
               })}
             ></Input>
@@ -95,6 +101,7 @@ export default function SignUp() {
               {errors.email?.message}
             </span>
           </div>
+
           <div className="mt-5">
             <Button text="가입하기"></Button>
           </div>
