@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import Layout from "../../components/layout";
-import TweetRow from "../../components/tweet";
+import TweetRow, { twitterDate } from "../../components/tweet";
 import useMutation from "../../lib/useMutation";
 import useUser from "../../lib/useUser";
 
@@ -126,7 +126,7 @@ export default function Home() {
               </button>
             )}
           </div>
-          <h1 className="font-bold text-xl flex items-center">
+          <h1 className=" text-gray-700 font-bold text-xl flex items-center">
             <span>{data?.findUser?.name}</span>
             <span className="pt-1 text-sky-500">
               <svg
@@ -143,9 +143,9 @@ export default function Home() {
               </svg>
             </span>
           </h1>
-          <h1 className="text-gray-400">@{data?.findUser?.userId}</h1>
-          <h1 className="text-sm pt-3 pb-5">
-            가입일: {data?.findUser?.createAt?.toString()}
+          <h1 className="text-gray-700">@{data?.findUser?.userId}</h1>
+          <h1 className="text-gray-700 pt-3 pb-5">
+            가입일: {twitterDate(data?.findUser?.createAt?.toString())}
           </h1>
           <div>
             <div></div>
@@ -165,7 +165,7 @@ export default function Home() {
                 id={tweet?.id}
                 name={tweet?.user?.name}
                 userId={tweet?.user?.userId}
-                time={tweet?.createdAt.toString()}
+                time={twitterDate(tweet?.createdAt.toString())}
                 favs={tweet?._count?.favs}
                 answers={tweet?._count?.answers}
                 tweet={tweet?.tweet}

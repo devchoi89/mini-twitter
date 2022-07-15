@@ -4,10 +4,31 @@ import Link from "next/link";
 //import useMutation from "../lib/useMutation";
 //import useUser from "../lib/useUser";
 
+export function twitterDate(date: any) {
+  if (!date) return;
+  const ampm = Number(date?.substring(11, 13)) > 11 ? "오후" : "오전";
+  const hour =
+    date?.substring(11, 13) % 12 === 0 ? 12 : date?.substring(11, 13) % 12;
+  const minute = date.substring(14, 16);
+  const year = date.substring(0, 4);
+  const month = date.substring(5, 7);
+  const day = date.substring(8, 10);
+  const changedDate = `${ampm} ${hour}:${minute} · ${year}년 ${month}월 ${day}일`;
+  //24시간 차이 구하기
+  /* const now = new Date();
+  console.log(now.getDate());
+  console.log(now.getHours());
+  console.log(now.getMinutes());
+  console.log(now.getMonth()); */
+  //현재 시간에서 트윗시간을 단위별 가중치를 곱한 뒤, 빼서 분단위 차이를 구한다.
+
+  return changedDate;
+}
+
 interface TweetProps {
   name: string;
   userId: string;
-  time: string;
+  time: any;
   tweet: string;
   id: number;
   favs: number;
@@ -59,6 +80,7 @@ export default function TweetRow({
     console.log(`/api/tweets/${id}`);
     mutate(`/api/tweets/${id}`);
   } */
+
   return (
     <Link href={`/tweet/${id}`}>
       <div className="transition-all ease-in-out duration-300 cursor-pointer  px-5 pt-3 hover:bg-sky-50">
@@ -97,7 +119,7 @@ export default function TweetRow({
             <div className="flex relative w-full">
               <span className="font-bold pr-1 text-[15px] flex items-center">
                 <Link href={`/${userId}`}>
-                  <a className="hover:underline">{name}</a>
+                  <a className=" text-gray-700 hover:underline">{name}</a>
                 </Link>
                 <svg
                   className="w-5 h-5 ml-[2px] mt-[2px] text-sky-500"

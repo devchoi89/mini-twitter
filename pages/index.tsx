@@ -3,7 +3,7 @@ import Head from "next/head";
 import React from "react";
 import useSWR from "swr";
 import Layout from "../components/layout";
-import TweetRow from "../components/tweet";
+import TweetRow, { twitterDate } from "../components/tweet";
 import useMutation from "../lib/useMutation";
 import useUser from "../lib/useUser";
 
@@ -77,7 +77,6 @@ export default function Home() {
       false
     );
   }
-
   async function onDeleteClick(tweetId: any) {
     if (deleteLoading) return;
     if (confirm("정말로 트윗을 지우시겠습니까?")) {
@@ -117,7 +116,7 @@ export default function Home() {
                 id={tweet?.id}
                 name={tweet?.user.name}
                 userId={tweet?.user.userId}
-                time={tweet?.createdAt.toString()}
+                time={twitterDate(tweet?.createdAt.toString())}
                 tweet={tweet?.tweet}
                 favs={tweet?._count.favs}
                 answers={tweet?._count.answers}

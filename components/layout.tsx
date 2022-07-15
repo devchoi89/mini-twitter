@@ -31,6 +31,10 @@ export default function Layout({
     );
   };
 
+  function onScrollTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   useEffect(() => {
     if (state) {
       router.push("/");
@@ -95,8 +99,9 @@ export default function Layout({
       </div>
       <div className="w-full max-w-2xl mx-auto border-x-[1px]">
         <div
+          onClick={onScrollTop}
           className={cls(
-            "bg-white bg-opacity-90 w-full max-w-[36.9rem]  text-xl font-bold py-3 fixed z-10 text-gray-700 top-0 flex pl-10 items-center"
+            "cursor-pointer bg-white bg-opacity-90 w-full max-w-[36.9rem]  text-xl font-bold py-3 fixed z-10 text-gray-700 top-0 flex pl-10 items-center"
           )}
         >
           {canGoBack ? (

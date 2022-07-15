@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import useSWR from "swr";
 import Layout from "../../components/layout";
-import TweetRow from "../../components/tweet";
+import TweetRow, { twitterDate } from "../../components/tweet";
 import useMutation from "../../lib/useMutation";
 import useUser from "../../lib/useUser";
 
@@ -132,6 +132,14 @@ export default function Home() {
     } else {
     }
   }
+  const date = data?.tweet?.createdAt.toString();
+
+  /*if (date) {
+    const parsedDate = console.log(Date.parse(date.substring(0, 10)));
+
+    const finalDate = new Date(date);
+    console.log(finalDate.getHours());
+  } */
 
   return (
     <Layout title="트윗" canGoBack hasSideBar>
@@ -172,7 +180,7 @@ export default function Home() {
               <span className="font-bold pr-1 text-[15px] flex items-center">
                 <span className="hover:underline">
                   <Link href={`/${data?.tweet?.user?.userId}`}>
-                    <span className="cursor-pointer">
+                    <span className=" text-gray-700 cursor-pointer">
                       {data?.tweet?.user?.name}
                     </span>
                   </Link>
@@ -191,7 +199,7 @@ export default function Home() {
                 </svg>
               </span>
             </div>
-            <span className="pr-2 text-[15px]">
+            <span className="text-gray-700 pr-2 text-[15px]">
               @{data?.tweet?.user?.userId}
             </span>
           </div>
@@ -201,7 +209,7 @@ export default function Home() {
             {data?.tweet?.tweet}
           </pre>
           <span className="text-[15px] text-gray-600">
-            {data?.tweet?.createdAt?.toString()}
+            {twitterDate(data?.tweet?.createdAt?.toString())}
           </span>
         </div>
         <div className="py-2 px-5 border-b-[1.5px] text-sm">
@@ -265,25 +273,22 @@ export default function Home() {
           </button>
         </div>
         <div className="divide-y-[1px]">
-          {data?.replies
-            .slice(0)
-            .reverse()
-            .map((reply) => (
-              <TweetRow
-                ondeleteclick={() => onDeleteClick(reply?.id)}
-                isMyTweet={user?.id === reply?.userId}
-                onclick={() => onLike(reply?.id)}
-                isLiked={user?.id === reply?.favs[0]?.userId}
-                key={reply?.id}
-                id={reply?.id}
-                name={reply?.user?.name}
-                userId={reply?.user?.userId}
-                time={reply?.createdAt.toString()}
-                favs={reply?._count?.favs}
-                answers={reply?._count?.answers}
-                tweet={reply?.tweet}
-              ></TweetRow>
-            ))}
+          {data?.replies.map((reply) => (
+            <TweetRow
+              ondeleteclick={() => onDeleteClick(reply?.id)}
+              isMyTweet={user?.id === reply?.userId}
+              onclick={() => onLike(reply?.id)}
+              isLiked={user?.id === reply?.favs[0]?.userId}
+              key={reply?.id}
+              id={reply?.id}
+              name={reply?.user?.name}
+              userId={reply?.user?.userId}
+              time={twitterDate(reply?.createdAt?.toString())}
+              favs={reply?._count?.favs}
+              answers={reply?._count?.answers}
+              tweet={reply?.tweet}
+            ></TweetRow>
+          ))}
         </div>
       </div>
     </Layout>
