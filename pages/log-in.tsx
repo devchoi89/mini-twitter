@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -37,6 +38,9 @@ export default function LogIn() {
 
   return (
     <div className="bg-transparent h-screen w-screen flex justify-center items-center  bg-gradient-to-b from-indigo-200 to-pink-200">
+      <Head>
+        <title>로그인</title>
+      </Head>
       <div className="bg-white rounded-lg shadow-2xl flex flex-col justify-center w-full max-w-2xl mx-auto px-28 py-40 ">
         <h1 className="text-center text-5xl font-bold">미니 트위터</h1>
         <form className="flex flex-col my-20" onSubmit={handleSubmit(onValid)}>
@@ -45,17 +49,17 @@ export default function LogIn() {
             kind="text"
             label="이메일"
             register={register("email", {
-              required: "이메일을 입력해주세요.",
+              required: "!이메일을 입력해주세요",
               validate: {
                 notEmail: (value) =>
-                  value.includes("@") || "이메일을 입력해주세요.",
+                  value.includes("@") || "!이메일을 입력해주세요",
               },
             })}
           ></Input>
           <span className="text-xs text-red-500">{errors.email?.message}</span>
           <span className="text-xs text-red-500">
             {result?.ok === false
-              ? "가입된 이메일이 아닙니다. 입력하신 내용을 다시 확인해주세요."
+              ? "!가입된 이메일이 아닙니다. 입력하신 내용을 다시 확인해주세요"
               : null}
           </span>
           <div className="mt-5">

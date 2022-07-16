@@ -11,7 +11,7 @@ export default function Button({ text, ...rest }: ButtonProps) {
       type="submit"
       {...rest}
       className={cls(
-        "w-full cursor-pointer text-white font-bold bg-pink-300 bg-opacity-100 p-2 rounded-md"
+        "transition-all ease-in-out duration-500 w-full cursor-pointer text-white font-bold bg-gray-800 hover:opacity-80 p-2 rounded-md"
       )}
     >
       {text}

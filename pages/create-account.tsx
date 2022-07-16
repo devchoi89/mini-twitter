@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -42,6 +43,9 @@ export default function SignUp() {
 
   return (
     <div className=" h-screen w-screen flex justify-center items-center  bg-gradient-to-b from-indigo-200 to-pink-200">
+      <Head>
+        <title>가입하기</title>
+      </Head>
       <div className=" bg-white rounded-2xl shadow-2xl flex flex-col justify-center w-full max-w-2xl mx-auto px-28 py-40 ">
         <h1 className="text-center text-4xl font-bold mb-10">
           지금 바로 가입하세요

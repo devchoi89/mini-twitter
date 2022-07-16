@@ -1,4 +1,5 @@
 import { Tweet } from "@prisma/client";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -36,6 +37,9 @@ export default function Write() {
 
   return (
     <Layout title="글쓰기" canGoBack hasSideBar>
+      <Head>
+        <title>글쓰기</title>
+      </Head>
       <form
         onSubmit={handleSubmit(onHandleTweet)}
         className="max-w-2xl mx-auto pt-5 px-5"
@@ -69,7 +73,7 @@ export default function Write() {
         <button
           type="submit"
           className={cls(
-            "w-full cursor-pointer text-white font-bold bg-pink-300 bg-opacity-100 p-2 rounded-md",
+            "w-full cursor-pointer text-white font-bold bg-gray-800 hover:opacity-80 p-2 rounded-md",
             watch("tweet")?.length > 140 ? "bg-opacity-50" : ""
           )}
         >

@@ -88,7 +88,7 @@ export default function Setting() {
             <button
               onClick={onBadgePrevieW}
               type="button"
-              className="w-40 font-semibold text-white text-sm bg-black rounded-r-lg"
+              className="w-40 font-semibold text-white text-sm bg-black hover:opacity-70 rounded-r-lg"
             >
               미리보기
             </button>
@@ -112,7 +112,7 @@ export default function Setting() {
             <button
               onClick={onBannerPrevieW}
               type="button"
-              className="w-40 font-semibold text-white text-sm bg-black rounded-r-lg"
+              className="w-40 font-semibold text-white text-sm bg-black hover:opacity-70 rounded-r-lg"
             >
               미리보기
             </button>
@@ -149,7 +149,7 @@ export default function Setting() {
             <button
               onClick={onIntroPrevieW}
               type="button"
-              className="w-28 p-2 font-semibold text-white text-sm bg-black rounded-lg"
+              className="w-28 p-2 font-semibold text-white text-sm bg-black rounded-lg hover:opacity-70"
             >
               미리보기
             </button>
