@@ -10,6 +10,12 @@ import TweetRow, { twitterDate } from "../../components/tweet";
 import useMutation from "../../lib/useMutation";
 import useUser from "../../lib/useUser";
 
+interface UrlState {
+  bannerUrl: string;
+  badgeUrl: string;
+  introText: string;
+}
+
 interface TweetsWithUser extends Tweet {
   _count: {
     favs: number;
@@ -36,8 +42,20 @@ export default function Home() {
   const [isMine, setIsMine] = useState(false);
   const headTitle = `${data?.findUser?.name}님의 트위터`;
   const { user } = useUser();
+  const [urlState, setUrlState] = useState<UrlState>({
+    bannerUrl: " ",
+    badgeUrl: " ",
+    introText: " ",
+  });
   useEffect(() => {
     setIsMine(router.query.id === user?.userId);
+    if (user) {
+      setUrlState({
+        bannerUrl: user?.banner,
+        badgeUrl: user?.badge,
+        introText: user?.intro,
+      });
+    }
   }, [router.query, user]);
 
   async function onLike(tweetId: any) {
@@ -115,10 +133,16 @@ export default function Home() {
         <Head>
           <title>{headTitle}</title>
         </Head>
-        <div className="h-40 w-full bg-cover  bg-center flex justify-end items-start bg-[url(https://www.ghibli.jp/gallery/umi005.jpg)]" />
+        <img
+          src={urlState.bannerUrl}
+          className="h-40 w-full object-cover object-center flex justify-end items-start bg-gray-300"
+        />
 
         <div className="px-5">
-          <div className="w-28 aspect-square rounded-full border-4 border-white bg-gray-300 absolute top-40 bg-cover bg-center bg-[url(https://www.ghibli.jp/gallery/umi007.jpg)]" />
+          <img
+            src={urlState.badgeUrl}
+            className="w-28 aspect-square rounded-full border-4 border-white bg-gray-300 absolute top-40 object-cover object-center"
+          />
           <div className="flex justify-end pt-3 pb-7 items-center">
             {isMine ? (
               <Link href="/write">

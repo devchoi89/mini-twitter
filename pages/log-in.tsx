@@ -2,7 +2,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import useSWR from "swr";
 import Button from "../components/button";
 import Input from "../components/input";
 interface LoginForm {
@@ -11,7 +10,6 @@ interface LoginForm {
 }
 
 export default function LogIn() {
-  const { data } = useSWR("/api/profile");
   const router = useRouter();
   const [result, setResult] = useState(Object);
   const {
@@ -35,7 +33,7 @@ export default function LogIn() {
     if (result?.ok) {
       router.push("/");
     }
-  }, [data, result, router]);
+  }, [result, router]);
 
   return (
     <div className="bg-transparent h-screen w-screen flex justify-center items-center  bg-gradient-to-b from-indigo-200 to-pink-200">

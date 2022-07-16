@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Button from "../../components/button";
 import Layout from "../../components/layout";
 import useUser from "../../lib/useUser";
-import { cls } from "../../lib/utils";
 
 interface ProfileState {
   banner: string;
@@ -18,7 +17,6 @@ interface UrlState {
 }
 
 export default function Setting() {
-  const { user } = useUser();
   const [state, setState] = useState<ProfileState>({
     banner: "#",
     badge: "#",
@@ -29,23 +27,17 @@ export default function Setting() {
     badgeUrl: " ",
     introText: " ",
   });
+  const { user } = useUser();
+
   useEffect(() => {
-    if (user?.banner && user?.badge && user?.intro) {
-      setState({
-        banner: "bg-[url(" + user?.banner + ")]",
-        badge: "bg-[url(" + user?.badge + ")]",
-        intro: user?.intro,
-      });
+    if (user) {
       setUrlState({
         bannerUrl: user?.banner,
         badgeUrl: user?.badge,
         introText: user?.intro,
       });
-      console.log(state);
     }
   }, [user]);
-  console.log(user);
-
   return (
     <Layout title="설정" canGoBack hasSideBar>
       <Head>
@@ -53,27 +45,27 @@ export default function Setting() {
       </Head>
       <div className=" ">
         <form className="flex flex-col w-full items-center max-w-2xl pb-5 px-5">
-          <div
-            className={cls(
-              "mb-5 shadow-2xl w-28 aspect-square rounded-full border-4 bg-cover bg-center  border-white bg-gray-300 ",
-              state.badge
-            )}
+          <img
+            className="mb-5 drop-shadow-2xl w-28 aspect-square rounded-full border-4 object-cover object-center  border-white bg-gray-300"
+            src={urlState.badgeUrl}
           />
-          <input type="text" defaultValue={urlState.badgeUrl} />
+
+          <input type="text" />
           <Button text="사진 주소 변경"></Button>
         </form>
         <form className="flex flex-col w-full items-center max-w-2xl pb-5 px-5">
-          <div
-            className={cls(
-              "mb-5 mt-10 drop-shadow-2xl h-40 w-full bg-cover rounded-xl  bg-center flex justify-end items-start  bg-gray-300 ",
-              state.banner
-            )}
+          <img
+            className={
+              "mb-5 mt-10 drop-shadow-2xl h-40 w-96 bg-cover rounded-xl  object-cover bg-gray-300"
+            }
+            src={urlState.bannerUrl}
           />
-          <input type="text" defaultValue={urlState.bannerUrl} />
+          <input type="text" />
           <Button text="배너 주소 변경"></Button>
         </form>
         <form className="flex flex-col w-full items-center max-w-2xl pb-5 px-5">
-          <input type="text" defaultValue={urlState.introText} />
+          {urlState.introText}
+          <input type="text" />
           <Button text="소개문구 변경"></Button>
         </form>
       </div>
