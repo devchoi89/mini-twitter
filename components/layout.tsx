@@ -54,13 +54,13 @@ export default function Layout({
   return (
     <div
       className={cls(
-        "bg-fixed bg-[length:25%] bg-gradient-to-b from-indigo-100 to-pink-100"
+        "text-gray-700 bg-fixed bg-[length:25%] bg-gradient-to-b from-indigo-100 to-pink-100"
       )}
     >
       <div className="flex max-w-2xl mx-auto font-arial bg-white min-h-screen">
         <div>
           {hasSideBar ? (
-            <nav className="pt-5 space-y-3 bg-white max-w-[30px] flex flex-col items-center text-gray-700 w-full px-10 pb-5 pt-3text-xs">
+            <nav className="pt-5 space-y-3 bg-white max-w-[30px] flex flex-col items-center w-full px-10 pb-5 pt-3text-xs">
               <Link href="/">
                 <a
                   className={cls(
@@ -205,7 +205,7 @@ export default function Layout({
           <div
             onClick={onScrollTop}
             className={cls(
-              "cursor-pointer bg-white bg-opacity-90 w-full max-w-[36.9rem]  text-xl font-bold py-3 fixed z-10 text-gray-700 top-0 flex pl-10 items-center"
+              "cursor-pointer bg-white bg-opacity-90 w-full max-w-[36.9rem]  text-xl font-bold py-3 fixed z-10 top-0 flex pl-10 items-center"
             )}
           >
             {canGoBack ? (

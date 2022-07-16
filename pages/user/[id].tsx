@@ -135,13 +135,13 @@ export default function Home() {
         </Head>
         <img
           src={urlState.bannerUrl}
-          className="h-40 w-full object-cover object-center flex justify-end items-start bg-gray-300"
+          className="appearance-none h-40 w-full object-cover object-center flex justify-end items-start bg-gray-200"
         />
 
         <div className="px-5">
           <img
             src={urlState.badgeUrl}
-            className="w-28 aspect-square rounded-full border-4 border-white bg-gray-300 absolute top-40 object-cover object-center"
+            className="w-28 aspect-square rounded-full border-4 border-white bg-gray-200 absolute top-40 object-cover object-center"
           />
           <div className="flex justify-end pt-3 pb-7 items-center">
             {isMine ? (
