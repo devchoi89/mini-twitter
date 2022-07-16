@@ -28,6 +28,7 @@ export function twitterDate(date: any) {
 interface TweetProps {
   name: string;
   userId: string;
+  badge: string;
   time: any;
   tweet: string;
   id: number;
@@ -57,6 +58,7 @@ interface TweetDetailResponse {
 export default function TweetRow({
   name,
   userId,
+  badge,
   time,
   tweet,
   id,
@@ -113,7 +115,10 @@ export default function TweetRow({
         </div>
         <div className=" flex w-full">
           <Link href={`/${userId}`}>
-            <div className="h-12 aspect-square rounded-full bg-gray-200 mr-3" />
+            <img
+              src={badge}
+              className="h-12 aspect-square rounded-full object-cover object-center bg-gray-200 mr-3"
+            />
           </Link>
           <div className="relative flex flex-col">
             <div className="flex relative w-full">

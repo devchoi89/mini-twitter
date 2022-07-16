@@ -173,7 +173,10 @@ export default function Home() {
 
         <div className="flex w-full px-5 py-3">
           <Link href={`/${data?.tweet?.user?.userId}`}>
-            <div className="cursor-pointer h-12 aspect-square rounded-full bg-gray-300 mr-3" />
+            <img
+              src={`/${data?.tweet?.user?.badge}`}
+              className="cursor-pointer object-cover object-center h-12 aspect-square rounded-full bg-gray-300 mr-3"
+            />
           </Link>
           <div>
             <div className="flex">
@@ -275,6 +278,7 @@ export default function Home() {
         <div className="divide-y-[1px]">
           {data?.replies.map((reply) => (
             <TweetRow
+              badge={`${reply?.user?.badge}`}
               ondeleteclick={() => onDeleteClick(reply?.id)}
               isMyTweet={user?.id === reply?.userId}
               onclick={() => onLike(reply?.id)}

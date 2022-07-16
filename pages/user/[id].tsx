@@ -49,14 +49,18 @@ export default function Home() {
   });
   useEffect(() => {
     setIsMine(router.query.id === user?.userId);
-    if (user) {
+    if (
+      data?.findUser?.banner &&
+      data?.findUser?.badge &&
+      data?.findUser?.intro
+    ) {
       setUrlState({
-        bannerUrl: user?.banner,
-        badgeUrl: user?.badge,
-        introText: user?.intro,
+        bannerUrl: data?.findUser?.banner,
+        badgeUrl: data?.findUser?.badge,
+        introText: data?.findUser?.intro,
       });
     }
-  }, [router.query, user]);
+  }, [router.query, data, user]);
 
   async function onLike(tweetId: any) {
     if (loading) return;
@@ -173,8 +177,9 @@ export default function Home() {
               </svg>
             </span>
           </h1>
-          <h1 className="text-gray-700">@{data?.findUser?.userId}</h1>
-          <h1 className="text-gray-700 pt-3 pb-5">
+          <h1 className="">@{data?.findUser?.userId}</h1>
+          <h1 className="py-3 text-[15px]">{data?.findUser?.intro}</h1>
+          <h1 className="pb-5">
             가입일: {twitterDate(data?.findUser?.createAt?.toString())}
           </h1>
           <div>
@@ -187,6 +192,7 @@ export default function Home() {
             .reverse()
             .map((tweet) => (
               <TweetRow
+                badge={`${tweet?.user?.badge}`}
                 ondeleteclick={() => onDeleteClick(tweet?.id)}
                 isMyTweet={user?.id === tweet?.userId}
                 onclick={() => onLike(tweet?.id)}

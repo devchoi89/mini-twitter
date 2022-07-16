@@ -22,7 +22,7 @@ export default function Layout({
   isMine,
 }: LayoutProps) {
   const router = useRouter();
-  const { user, isLoading } = useUser();
+  const { user } = useUser();
   const [state, setState] = useState(false);
   const onClick = () => {
     router.back();

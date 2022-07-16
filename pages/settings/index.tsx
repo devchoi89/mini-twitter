@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../components/button";
 import Layout from "../../components/layout";
+import useMutation from "../../lib/useMutation";
 import useUser from "../../lib/useUser";
 import { cls } from "../../lib/utils";
 
@@ -28,6 +29,7 @@ export default function Setting() {
   const { register, watch, handleSubmit } = useForm<onSettingsForm>({
     mode: "onChange",
   });
+  const [mutation, { loading }] = useMutation("/api/settings");
 
   useEffect(() => {
     if (user) {
@@ -40,23 +42,19 @@ export default function Setting() {
   }, [user]);
 
   const onHandleSave = async (onValidForm: onSettingsForm) => {
-    console.log(onValidForm);
+    if (loading) return;
+    mutation(onValidForm);
   };
   const onBadgePrevieW = () => {
-    setUrlState({ ...urlState, badgeUrl: watch("badge") });
-    console.log(urlState.badgeUrl);
+    setUrlState({ ...urlState, badgeUrl: `${watch("badge")}` });
   };
 
   const onBannerPrevieW = () => {
-    setUrlState({ ...urlState, bannerUrl: watch("banner") });
-    console.log(urlState.badgeUrl);
-    console.log(watch("banner"));
+    setUrlState({ ...urlState, bannerUrl: `${watch("banner")}` });
   };
 
   const onIntroPrevieW = () => {
-    setUrlState({ ...urlState, introText: watch("intro") });
-    console.log(urlState.badgeUrl);
-    console.log(watch("intro"));
+    setUrlState({ ...urlState, introText: `${watch("intro")}` });
   };
 
   return (
@@ -121,7 +119,7 @@ export default function Setting() {
           </div>
           <span className="font-bold text-sm pt-5 pb-1">소개글</span>
           <div className="h-24 p-1 border-y-[1px] border-gray-300 rounded-lg">
-            <span className="text-sm">{urlState?.introText}</span>
+            <span className="text-[15px]">{urlState?.introText}</span>
           </div>
           <textarea
             {...register("intro", {
@@ -130,7 +128,7 @@ export default function Setting() {
             })}
             defaultValue={user?.intro}
             className={cls(
-              "w-full h-24 p-2 text-sm border-2 border-white rounded-md bg-gray-200 focus:bg-white",
+              "w-full h-24 p-2 text-[15px] border-2 border-white rounded-md bg-gray-200 focus:bg-white",
               watch("intro")?.length > 140
                 ? " focus:outline-red-500  border-red-500"
                 : ""

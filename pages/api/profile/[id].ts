@@ -16,6 +16,9 @@ async function profile(req: NextApiRequest, res: NextApiResponse) {
       id: true,
       userId: true,
       name: true,
+      badge: true,
+      banner: true,
+      intro: true,
       createAt: true,
     },
   });
