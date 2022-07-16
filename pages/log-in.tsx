@@ -39,11 +39,21 @@ export default function LogIn() {
   return (
     <div className="bg-transparent h-screen w-screen flex justify-center items-center  bg-gradient-to-b from-indigo-200 to-pink-200">
       <Head>
-        <title>로그인</title>
+        <title>로그인 / 가벼운 트위터</title>
       </Head>
-      <div className="bg-white rounded-lg shadow-2xl flex flex-col justify-center w-full max-w-2xl mx-auto px-28 py-40 ">
-        <h1 className="text-center text-5xl font-bold">미니 트위터</h1>
-        <form className="flex flex-col my-20" onSubmit={handleSubmit(onValid)}>
+      <div className="bg-white rounded-lg shadow-2xl flex flex-col justify-center items-center w-full max-w-2xl mx-auto px-28 pt-20 pb-40 ">
+        <img
+          src="https://img.lovepik.com/background/20211021/medium/lovepik-feather-background-image_401363070.jpg"
+          className="drop-shadow-2xl m-8 w-28 aspect-square object-cover object-center rounded-full border-2 border-indigo-200 bg-indigo-100"
+        />
+        <h1 className="font-['Goegia'] text-center text-4xl font-bold">
+          가벼운 트위터
+        </h1>
+        <h2 className="text-sm pt-3">쉽다. 단순하다.</h2>
+        <form
+          className="flex flex-col w-full my-20"
+          onSubmit={handleSubmit(onValid)}
+        >
           <Input
             type="text"
             kind="text"
@@ -67,7 +77,7 @@ export default function LogIn() {
           </div>
         </form>
 
-        <div className="border-t-[1px] flex justify-center">
+        <div className="border-t-[1px] w-full flex justify-center">
           <div className="relative -top-3 bg-white px-3">
             <span>계정이 없으신가요?</span>
             <Link href="/create-account">

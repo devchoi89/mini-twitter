@@ -54,10 +54,10 @@ export default function Layout({
   return (
     <div
       className={cls(
-        "text-gray-700 bg-fixed bg-[length:25%] bg-gradient-to-b from-indigo-100 to-pink-100"
+        "text-gray-700 font-['Arial'] bg-fixed bg-[length:25%] bg-gradient-to-b from-indigo-100 to-pink-100"
       )}
     >
-      <div className="flex max-w-2xl mx-auto font-arial bg-white min-h-screen">
+      <div className="flex max-w-2xl mx-auto bg-white min-h-screen">
         <div>
           {hasSideBar ? (
             <nav className="pt-5 space-y-3 bg-white max-w-[30px] flex flex-col items-center w-full px-10 pb-5 pt-3text-xs">

@@ -39,7 +39,7 @@ export default function WriteReply() {
   return (
     <Layout title="답글 쓰기" canGoBack hasSideBar>
       <Head>
-        <title>답글 쓰기</title>
+        <title>답글 쓰기 / 가벼운 트위터</title>
       </Head>
       <form
         onSubmit={handleSubmit(onHandleTweet)}

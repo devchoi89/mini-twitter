@@ -34,7 +34,7 @@ export default function Home() {
   const [deleteMutation, { loading: deleteLoading }] =
     useMutation("/api/delete");
   const [isMine, setIsMine] = useState(false);
-  const headTitle = `${data?.findUser?.name}님의 트위터`;
+  const headTitle = `${data?.findUser?.name}님의 가벼운 트위터`;
   const { user } = useUser();
   useEffect(() => {
     setIsMine(router.query.id === user?.userId);

@@ -100,7 +100,7 @@ export default function Home() {
     <Layout title="모든 트윗" canGoBack hasSideBar>
       <div className="flex flex-col w-full max-w-2xl mx-auto pb-5">
         <Head>
-          <title>홈</title>
+          <title>가벼운 트위터</title>
         </Head>
         <div className="divide-y-[1px]">
           {data?.tweets

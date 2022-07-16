@@ -60,7 +60,7 @@ export default function Setting() {
   return (
     <Layout title="설정" canGoBack hasSideBar>
       <Head>
-        <title>설정</title>
+        <title>설정 / 가벼운 트위터</title>
       </Head>
       <div className="px-5 flex flex-col">
         <span className="font-bold text-xl">계정</span>

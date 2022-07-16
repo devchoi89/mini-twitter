@@ -132,8 +132,8 @@ export default function Home() {
     } else {
     }
   }
-  const date = data?.tweet?.createdAt.toString();
 
+  //const date = data?.tweet?.createdAt.toString();
   /*if (date) {
     const parsedDate = console.log(Date.parse(date.substring(0, 10)));
 
@@ -145,7 +145,7 @@ export default function Home() {
     <Layout title="트윗" canGoBack hasSideBar>
       <div className="flex flex-col w-full max-w-2xl mx-auto pb-5">
         <Head>
-          <title>트윗</title>
+          <title>트윗 / 가벼운 트위터</title>
         </Head>
         {user?.id === data?.tweet?.userId ? (
           <div className="flex justify-end pr-5">

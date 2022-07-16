@@ -44,7 +44,7 @@ export default function SignUp() {
   return (
     <div className=" h-screen w-screen flex justify-center items-center  bg-gradient-to-b from-indigo-200 to-pink-200">
       <Head>
-        <title>가입하기</title>
+        <title>가입하기 / 가벼운 트위터</title>
       </Head>
       <div className=" bg-white rounded-2xl shadow-2xl flex flex-col justify-center w-full max-w-2xl mx-auto px-28 py-40 ">
         <h1 className="text-center text-4xl font-bold mb-10">
@@ -57,11 +57,11 @@ export default function SignUp() {
               kind="text"
               label="이름"
               register={register("name", {
-                required: "!이름을 입력해 주세요",
+                required: "! 이름을 입력해 주세요",
                 validate: {
                   notEmail: (value) =>
                     !(value.search(/^\s/) > -1 || value.search(/\s$/) > -1) ||
-                    "!아이디의 시작과 끝에는 공백이 없어야 합니다",
+                    "! 이름의 시작과 끝에는 공백이 없어야 합니다",
                 },
               })}
             ></Input>
@@ -71,18 +71,20 @@ export default function SignUp() {
               kind="text"
               label="아이디"
               register={register("userId", {
-                required: "!아이디를 입력해 주세요",
+                required: "! 아이디를 입력해 주세요",
                 validate: {
                   onlyNumAndEng: (value) =>
                     value.search(/[\W]/g) === -1 ||
-                    "!영문자 또는 숫자만 입력해주세요",
+                    "! 영문자 또는 숫자만 입력해주세요",
+                  noUpperCase: (value) =>
+                    value.search(/[A-Z]/g) === -1 || "! 소문자만 입력해주세요",
                 },
               })}
             ></Input>
             <div>
               {result === false ? (
                 <span className="text-xs text-red-500">
-                  !중복된 아이디입니다
+                  ! 중복된 아이디입니다
                 </span>
               ) : null}
               <span className="text-xs text-red-500">
@@ -94,10 +96,10 @@ export default function SignUp() {
               kind="text"
               label="이메일"
               register={register("email", {
-                required: "!이메일을 입력해주세요",
+                required: "! 이메일을 입력해주세요",
                 validate: {
                   notEmail: (value) =>
-                    value.search(/^\S+@\S+$/) > -1 || "!이메일을 입력해주세요",
+                    value.search(/^\S+@\S+$/) > -1 || "! 이메일을 입력해주세요",
                 },
               })}
             ></Input>
