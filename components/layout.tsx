@@ -43,14 +43,14 @@ export default function Layout({
     }
   }, [state, router]);
 
-  //random background image
+  /*random background image
   const images = [
     "bg-[url(https://www.ghibli.jp/gallery/umi005.jpg)] bg-left-bottom",
     "bg-[url(https://www.ghibli.jp/gallery/umi032.jpg)] bg-right-bottom",
     "bg-[url(https://www.ghibli.jp/gallery/umi031.jpg)] bg-left-top",
     "bg-[url(https://www.ghibli.jp/images/umi1.jpg)] bg-right-top",
   ];
-  const chosenImage = images[Math.floor(Math.random() * images.length)];
+  const chosenImage = images[Math.floor(Math.random() * images.length)]; */
   return (
     <div
       className={cls(
@@ -181,7 +181,7 @@ export default function Layout({
               </Link>
               <button
                 onClick={onLogoutClick}
-                className="transition-all ease-in-out duration-500 p-3 rounded-full hover:bg-gray-200 fixed top-48 flex flex-col justify-center items-center"
+                className="transition-all ease-in-out duration-500 p-3 rounded-full hover:bg-indigo-100 fixed top-48 flex flex-col justify-center items-center"
               >
                 <svg
                   className="w-7 h-7"

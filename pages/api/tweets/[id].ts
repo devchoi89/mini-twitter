@@ -17,6 +17,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           id: true,
           name: true,
           userId: true,
+          badge: true,
         },
       },
       _count: {
@@ -37,6 +38,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           id: true,
           name: true,
           userId: true,
+          badge: true,
         },
       },
       _count: {

@@ -17,6 +17,7 @@ async function HomeTweets(req: NextApiRequest, res: NextApiResponse) {
             id: true,
             name: true,
             userId: true,
+            badge: true,
           },
         },
         _count: {

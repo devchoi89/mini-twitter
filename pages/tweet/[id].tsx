@@ -174,7 +174,7 @@ export default function Home() {
         <div className="flex w-full px-5 py-3">
           <Link href={`/${data?.tweet?.user?.userId}`}>
             <img
-              src={`/${data?.tweet?.user?.badge}`}
+              src={`${data?.tweet?.user?.badge}`}
               className="cursor-pointer object-cover object-center h-12 aspect-square rounded-full bg-gray-300 mr-3"
             />
           </Link>

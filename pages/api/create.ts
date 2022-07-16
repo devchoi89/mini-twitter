@@ -18,6 +18,11 @@ export default async function Create(
         name,
         userId,
         email,
+        badge:
+          "https://img.danawa.com/prod_img/500000/126/615/img/14615126_1.jpg",
+        banner:
+          "https://blog.kakaocdn.net/dn/b9LGuJ/btqTowTZVQB/DsCtwwKtpav5Bu8uC6jKXk/img.jpg",
+        intro: "춘식입니다. (기본 소개글)",
       },
       update: {},
     });
