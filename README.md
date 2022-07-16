@@ -1,1 +1,1 @@
-mini twitter
+가벼운 트위터
