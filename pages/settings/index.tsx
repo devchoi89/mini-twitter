@@ -154,7 +154,10 @@ export default function Setting() {
               미리보기
             </button>
           </div>
-          <Button type="submit" text="저장"></Button>
+          <Button
+            type="submit"
+            text={loading ? "저장 중입니다..." : "저장"}
+          ></Button>
         </form>
       </div>
     </Layout>
