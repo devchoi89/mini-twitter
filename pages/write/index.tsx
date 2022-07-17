@@ -36,9 +36,9 @@ export default function Write() {
   }, [data, router]);
 
   return (
-    <Layout title="글쓰기 / 가벼운 트위터" canGoBack hasSideBar>
+    <Layout title="글쓰기" canGoBack hasSideBar>
       <Head>
-        <title>글쓰기</title>
+        <title>글쓰기 / 가벼운 트위터</title>
       </Head>
       <form
         onSubmit={handleSubmit(onHandleTweet)}

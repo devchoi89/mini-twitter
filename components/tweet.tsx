@@ -4,7 +4,7 @@ import Link from "next/link";
 //import useMutation from "../lib/useMutation";
 //import useUser from "../lib/useUser";
 
-export function twitterDate(date: any) {
+/* export function twitterDate(date: any) {
   if (!date) return;
   const ampm = Number(date?.substring(11, 13)) > 11 ? "오후" : "오전";
   const hour =
@@ -14,16 +14,9 @@ export function twitterDate(date: any) {
   const month = date.substring(5, 7);
   const day = date.substring(8, 10);
   const changedDate = `${ampm} ${hour}:${minute} · ${year}년 ${month}월 ${day}일`;
-  //24시간 차이 구하기
-  /* const now = new Date();
-  console.log(now.getDate());
-  console.log(now.getHours());
-  console.log(now.getMinutes());
-  console.log(now.getMonth()); */
-  //현재 시간에서 트윗시간을 단위별 가중치를 곱한 뒤, 빼서 분단위 차이를 구한다.
 
   return changedDate;
-}
+} */
 
 interface TweetProps {
   name: string;

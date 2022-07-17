@@ -6,7 +6,8 @@ import { useRouter } from "next/router";
 import React from "react";
 import useSWR from "swr";
 import Layout from "../../components/layout";
-import TweetRow, { twitterDate } from "../../components/tweet";
+import TweetRow from "../../components/tweet";
+import twitterDate from "../../lib/twitterDate";
 import useMutation from "../../lib/useMutation";
 import useUser from "../../lib/useUser";
 
@@ -208,11 +209,11 @@ export default function Home() {
           </div>
         </div>
         <div className="w-full px-5 pb-3 border-b-[1.5px]">
-          <pre className="text-2xl whitespace-pre-wrap space-y-1">
+          <pre className="text-2xl whitespace-pre-wrap space-y-1 mb-3">
             {data?.tweet?.tweet}
           </pre>
           <span className="text-[15px] text-gray-600">
-            {twitterDate(data?.tweet?.createdAt?.toString())}
+            {twitterDate(data?.tweet?.createdAt?.toString(), "detail")}
           </span>
         </div>
         <div className="py-2 px-5 border-b-[1.5px] text-sm">
@@ -287,7 +288,7 @@ export default function Home() {
               id={reply?.id}
               name={reply?.user?.name}
               userId={reply?.user?.userId}
-              time={twitterDate(reply?.createdAt?.toString())}
+              time={twitterDate(reply?.createdAt?.toString(), "list")}
               favs={reply?._count?.favs}
               answers={reply?._count?.answers}
               tweet={reply?.tweet}

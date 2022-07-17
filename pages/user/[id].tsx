@@ -6,7 +6,8 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import Layout from "../../components/layout";
-import TweetRow, { twitterDate } from "../../components/tweet";
+import TweetRow from "../../components/tweet";
+import twitterDate from "../../lib/twitterDate";
 import useMutation from "../../lib/useMutation";
 import useUser from "../../lib/useUser";
 
@@ -156,9 +157,9 @@ export default function Home() {
             </span>
           </h1>
           <h1 className="">@{data?.findUser?.userId}</h1>
-          <h1 className="py-3 text-[15px]">{data?.findUser?.intro}</h1>
+          <h1 className="py-3">{data?.findUser?.intro}</h1>
           <h1 className="pb-5">
-            가입일: {twitterDate(data?.findUser?.createAt?.toString())}
+            가입일: {twitterDate(data?.findUser?.createAt?.toString(), "join")}
           </h1>
           <div>
             <div></div>
@@ -179,7 +180,7 @@ export default function Home() {
                 id={tweet?.id}
                 name={tweet?.user?.name}
                 userId={tweet?.user?.userId}
-                time={twitterDate(tweet?.createdAt.toString())}
+                time={twitterDate(tweet?.createdAt.toString(), "list")}
                 favs={tweet?._count?.favs}
                 answers={tweet?._count?.answers}
                 tweet={tweet?.tweet}

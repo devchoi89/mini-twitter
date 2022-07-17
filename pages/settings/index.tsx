@@ -119,7 +119,7 @@ export default function Setting() {
           </div>
           <span className="font-bold text-sm pt-5 pb-1">소개글</span>
           <div className="h-24 p-1 border-y-[1px] border-gray-300 rounded-lg">
-            <span className="text-[15px]">{urlState?.introText}</span>
+            <span>{urlState?.introText}</span>
           </div>
           <textarea
             {...register("intro", {
@@ -128,7 +128,7 @@ export default function Setting() {
             })}
             defaultValue={user?.intro}
             className={cls(
-              "w-full h-24 p-2 text-[15px] border-2 border-white rounded-md bg-gray-200 focus:bg-white",
+              "w-full h-24 p-2 border-2 border-white rounded-md bg-gray-200 focus:bg-white",
               watch("intro")?.length > 140
                 ? " focus:outline-red-500  border-red-500"
                 : ""

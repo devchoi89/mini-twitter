@@ -3,7 +3,8 @@ import Head from "next/head";
 import React from "react";
 import useSWR from "swr";
 import Layout from "../components/layout";
-import TweetRow, { twitterDate } from "../components/tweet";
+import TweetRow from "../components/tweet";
+import twitterDate from "../lib/twitterDate";
 import useMutation from "../lib/useMutation";
 import useUser from "../lib/useUser";
 
@@ -117,7 +118,7 @@ export default function Home() {
                 id={tweet?.id}
                 name={tweet?.user.name}
                 userId={tweet?.user.userId}
-                time={twitterDate(tweet?.createdAt.toString())}
+                time={twitterDate(tweet?.createdAt.toString(), "list")}
                 tweet={tweet?.tweet}
                 favs={tweet?._count.favs}
                 answers={tweet?._count.answers}
