@@ -24,6 +24,7 @@ interface TweetProps {
   badge: string;
   time: any;
   tweet: string;
+  image?: any;
   id: number;
   favs: number;
   answers: number;
@@ -54,6 +55,7 @@ export default function TweetRow({
   badge,
   time,
   tweet,
+  image,
   id,
   favs,
   answers,
@@ -75,7 +77,7 @@ export default function TweetRow({
     console.log(`/api/tweets/${id}`);
     mutate(`/api/tweets/${id}`);
   } */
-
+  console.log(typeof image);
   return (
     <Link href={`/tweet/${id}`}>
       <div className="transition-all ease-in-out duration-300 cursor-pointer  px-5 pt-3 hover:bg-sky-50">
@@ -138,6 +140,12 @@ export default function TweetRow({
               <span className="text-[15px]">· {time}</span>
             </div>
             <pre className="text-[15px] whitespace-pre-wrap">{tweet}</pre>
+            {image ? (
+              <img
+                className="max-h-96 w-auto  mt-3 border-[1px] border-gray-300 rounded-lg"
+                src={`${image}`}
+              />
+            ) : null}
           </div>
         </div>
         <div className="flex justify-evenly  items-center pb-1 text-gray-500">

@@ -212,6 +212,12 @@ export default function Home() {
           <pre className="text-2xl whitespace-pre-wrap space-y-1 mb-3">
             {data?.tweet?.tweet}
           </pre>
+          {data?.tweet?.image ? (
+            <img
+              className="max-h-96 w-auto  my-3 border-[1px] border-gray-300 rounded-lg"
+              src={`${data?.tweet?.image}`}
+            />
+          ) : null}
           <span className="text-[15px] text-gray-600">
             {twitterDate(data?.tweet?.createdAt?.toString(), "detail")}
           </span>
@@ -279,6 +285,7 @@ export default function Home() {
         <div className="divide-y-[1px]">
           {data?.replies.map((reply) => (
             <TweetRow
+              image={reply?.image}
               badge={`${reply?.user?.badge}`}
               ondeleteclick={() => onDeleteClick(reply?.id)}
               isMyTweet={user?.id === reply?.userId}

@@ -1,7 +1,7 @@
 import { Tweet } from "@prisma/client";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Layout from "../../components/layout";
 import useMutation from "../../lib/useMutation";
@@ -9,6 +9,7 @@ import { cls } from "../../lib/utils";
 
 interface onTweetForm {
   tweet: string;
+  image: string;
 }
 
 interface TweetMutation {
@@ -28,12 +29,17 @@ export default function Write() {
     if (loading) return;
     mutation(onValidForm);
   };
+  const [previewImage, setpreviewImage] = useState("");
 
   useEffect(() => {
     if (data && data?.ok) {
       router.push(`/tweet/${data?.post?.id}`);
     }
   }, [data, router]);
+
+  const onImagePrevieW = () => {
+    setpreviewImage(watch("image"));
+  };
 
   return (
     <Layout title="글쓰기" canGoBack hasSideBar>
@@ -70,6 +76,28 @@ export default function Write() {
           </span>
           <span className="font-sm text-sm">/140</span>
         </div>
+
+        <div className="flex pt-1 pb-5">
+          <input
+            {...register("image")}
+            className="w-full text-sm bg-gray-200 rounded-l-md p-2 focus:bg-white"
+            type="text"
+            placeholder="이미지 주소"
+          />
+          <button
+            onClick={onImagePrevieW}
+            type="button"
+            className="w-40 font-semibold text-white text-sm bg-gray-800 hover:opacity-70 rounded-r-md"
+          >
+            미리보기
+          </button>
+        </div>
+        {previewImage ? (
+          <img
+            className="max-h-96 w-auto mb-3 border-[1px] border-gray-300 rounded-lg"
+            src={`${previewImage}`}
+          />
+        ) : null}
         <button
           type="submit"
           className={cls(

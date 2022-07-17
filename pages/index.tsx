@@ -109,6 +109,7 @@ export default function Home() {
             .reverse()
             .map((tweet) => (
               <TweetRow
+                image={tweet?.image}
                 badge={`${tweet?.user?.badge}`}
                 ondeleteclick={() => onDeleteClick(tweet?.id)}
                 isMyTweet={user?.id === tweet?.userId}

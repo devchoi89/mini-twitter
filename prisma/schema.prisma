@@ -31,6 +31,7 @@ model Tweet {
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
   tweet       String
+  image       String?
   favs        Fav[]
   parent      Tweet?    @relation("Reply",fields: [parentId], references: [id], onDelete: Cascade)
   parentId    Int?

@@ -4,13 +4,14 @@ import { withApiSession } from "../../../lib/withSession";
 
 async function Write(req: NextApiRequest, res: NextApiResponse) {
   const {
-    body: { tweet },
+    body: { tweet, image },
     query: { id },
     session: { user },
   } = req;
   const post = await db.tweet.create({
     data: {
       tweet,
+      image,
       parent: {
         connect: {
           id: +id.toString(),
