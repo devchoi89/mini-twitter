@@ -29,9 +29,9 @@ export default function Home() {
   const [deleteMutation, { loading: deleteLoading }] =
     useMutation("/api/delete");
 
-  async function onLike(tweetId: any) {
+  function onLike(tweetId: any) {
     if (loading) return;
-    await mutation(tweetId);
+    mutation(tweetId);
     if (!data) return;
     /*   
     let index = data?.tweets.findIndex((reply) => reply.id == tweetId);

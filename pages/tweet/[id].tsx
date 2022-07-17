@@ -59,9 +59,9 @@ export default function Home() {
     );
   }
 
-  async function onLike(tweetId: any) {
+  function onLike(tweetId: any) {
     if (loading) return;
-    await mutation(tweetId);
+    mutation(tweetId);
     if (!data) return;
     //data를 수정된 newData로 바꾼다.
     /*     let index = data?.replies.findIndex((reply) => reply.id == tweetId);
@@ -109,10 +109,10 @@ export default function Home() {
     );
   }
 
-  async function onMainDeleteClick(tweetId: any) {
+  function onMainDeleteClick(tweetId: any) {
     if (deleteLoading) return;
     if (confirm("정말로 트윗을 지우시겠습니까?")) {
-      await deleteMutation(tweetId);
+      deleteMutation(tweetId);
       alert("트윗이 삭제되었습니다.");
       if (!data) return;
       router.push(`/${user?.userId}`);
@@ -120,10 +120,10 @@ export default function Home() {
     }
   }
 
-  async function onDeleteClick(tweetId: any) {
+  function onDeleteClick(tweetId: any) {
     if (deleteLoading) return;
     if (confirm("정말로 트윗을 지우시겠습니까?")) {
-      await deleteMutation(tweetId);
+      deleteMutation(tweetId);
       alert("트윗이 삭제되었습니다.");
       if (!data) return;
       mutate(

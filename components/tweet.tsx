@@ -77,7 +77,6 @@ export default function TweetRow({
     console.log(`/api/tweets/${id}`);
     mutate(`/api/tweets/${id}`);
   } */
-  console.log(typeof image);
   return (
     <Link href={`/tweet/${id}`}>
       <div className="transition-all ease-in-out duration-300 cursor-pointer  px-5 pt-3 hover:bg-sky-50">

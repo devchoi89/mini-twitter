@@ -25,7 +25,7 @@ export default function Write() {
 
   const [mutation, { loading, data }] =
     useMutation<TweetMutation>("/api/write/");
-  const onHandleTweet = async (onValidForm: onTweetForm) => {
+  const onHandleTweet = (onValidForm: onTweetForm) => {
     if (loading) return;
     mutation(onValidForm);
   };
@@ -40,7 +40,6 @@ export default function Write() {
   const onImagePrevieW = () => {
     setpreviewImage(watch("image"));
   };
-
   return (
     <Layout title="글쓰기" canGoBack hasSideBar>
       <Head>

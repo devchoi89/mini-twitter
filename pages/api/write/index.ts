@@ -19,7 +19,6 @@ async function Write(req: NextApiRequest, res: NextApiResponse) {
       },
     },
   });
-  console.log("성공!");
   res.json({
     ok: true,
     post,

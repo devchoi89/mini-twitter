@@ -30,7 +30,6 @@ export default async function Create(
       ok: true,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ ok: false, message: "중복된 아이디입니다." });
   }
 }

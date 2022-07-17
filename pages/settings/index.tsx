@@ -41,7 +41,7 @@ export default function Setting() {
     }
   }, [user]);
 
-  const onHandleSave = async (onValidForm: onSettingsForm) => {
+  const onHandleSave = (onValidForm: onSettingsForm) => {
     if (loading) return;
     mutation(onValidForm);
   };
