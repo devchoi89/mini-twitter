@@ -26,7 +26,12 @@ export default function Setting() {
     introText: " ",
   });
   const { user } = useUser();
-  const { register, watch, handleSubmit } = useForm<onSettingsForm>({
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<onSettingsForm>({
     mode: "onChange",
   });
   const [mutation, { loading }] = useMutation("/api/settings");
@@ -80,6 +85,11 @@ export default function Setting() {
             <input
               {...register("badge", {
                 required: "프로필 이미지 주소를 입력해 주세요.",
+                validate: {
+                  onlyNaver: (value) =>
+                    value.includes("pstatic.net") ||
+                    "! 네이버 검색 이미지만 가능해요.",
+                },
               })}
               className="w-full text-sm bg-gray-200 rounded-l-lg p-2 focus:bg-white"
               defaultValue={user?.badge}
@@ -93,6 +103,9 @@ export default function Setting() {
               미리보기
             </button>
           </div>
+          <span className="text-xs text-red-500 pt-1">
+            {errors?.badge?.message}
+          </span>
           <span className="font-bold text-sm pt-5 pb-1">배너 이미지</span>
           <img
             className={
@@ -104,6 +117,11 @@ export default function Setting() {
             <input
               {...register("banner", {
                 required: "배너 이미지 주소를 입력해 주세요.",
+                validate: {
+                  onlyNaver: (value) =>
+                    value.includes("pstatic.net") ||
+                    "! 네이버 검색 이미지만 가능해요.",
+                },
               })}
               className="w-full text-sm bg-gray-200 rounded-l-lg p-2 focus:bg-white"
               defaultValue={user?.banner}
@@ -117,6 +135,9 @@ export default function Setting() {
               미리보기
             </button>
           </div>
+          <span className="text-xs text-red-500 pt-1">
+            {errors?.banner?.message}
+          </span>
           <span className="font-bold text-sm pt-5 pb-1">소개글</span>
           <div className="h-24 p-1 border-y-[1px] border-gray-300 rounded-lg">
             <span>{urlState?.introText}</span>
@@ -154,10 +175,7 @@ export default function Setting() {
               미리보기
             </button>
           </div>
-          <Button
-            type="submit"
-            text={loading ? "저장 중입니다..." : "저장"}
-          ></Button>
+          <Button type="submit" text={loading ? "저장중..." : "저장"}></Button>
         </form>
       </div>
     </Layout>

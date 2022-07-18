@@ -21,7 +21,12 @@ export default function WriteReply() {
   const router = useRouter();
   const tweetQuery = router.query || [];
   const [previewImage, setpreviewImage] = useState("");
-  const { register, watch, handleSubmit } = useForm<onTweetForm>({
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<onTweetForm>({
     mode: "onChange",
   });
   const [mutation, { loading, data }] = useMutation<TweetMutation>(
@@ -77,9 +82,17 @@ export default function WriteReply() {
           </span>
           <span className="font-sm text-sm">/140</span>
         </div>
+        <span className="text-xs text-red-500">{errors?.image?.message}</span>
         <div className="flex pt-1 pb-5">
           <input
-            {...register("image")}
+            {...register("image", {
+              validate: {
+                onlyNaver: (value) =>
+                  value.length === 0 ||
+                  value.includes("pstatic.net") ||
+                  "! 네이버 검색 이미지만 가능해요.",
+              },
+            })}
             className="w-full text-sm bg-gray-200 rounded-l-md p-2 focus:bg-white"
             type="text"
             placeholder="이미지 주소"
@@ -105,7 +118,7 @@ export default function WriteReply() {
             watch("tweet")?.length > 140 ? "bg-opacity-50" : ""
           )}
         >
-          트윗하기
+          {loading ? "저장중..." : "트윗하기"}
         </button>
       </form>
     </Layout>

@@ -81,7 +81,7 @@ export default function TweetRow({
     <Link href={`/tweet/${id}`}>
       <div className="transition-all ease-in-out duration-300 cursor-pointer  px-5 pt-3 hover:bg-sky-50">
         <div className="flex justify-end">
-          <Link href="javascript:;">
+          <Link href="javascript:void(0)">
             {isMyTweet ? (
               <button
                 onClick={ondeleteclick}
@@ -111,7 +111,7 @@ export default function TweetRow({
           <Link href={`/${userId}`}>
             <img
               src={badge}
-              className="h-12 aspect-square rounded-full object-cover object-center bg-gray-200 mr-3"
+              className="h-12 w-12 rounded-full object-cover object-center bg-gray-200 mr-3"
             />
           </Link>
           <div className="relative flex flex-col">
@@ -170,7 +170,7 @@ export default function TweetRow({
             <span className="text-sm">{answers}</span>
           </div>
           <div className="flex items-center">
-            <Link href="javascript:;">
+            <Link href="javascript:void(0)">
               <button
                 onClick={onclick}
                 className="transition-all ease-in-out duration-300 p-2 rounded-full hover:bg-red-100 hover:text-red-500 flex items-center"
