@@ -5,11 +5,17 @@ import { withApiSession } from "../../../lib/withSession";
 async function HomeTweets(req: NextApiRequest, res: NextApiResponse) {
   const {
     session: { user },
+    query: { page },
   } = req;
   if (req.method === "GET") {
     const tweets = await db.tweet.findMany({
+      skip: (+page - 1) * 10,
+      take: 10,
       where: {
         parentId: null,
+      },
+      orderBy: {
+        id: "desc",
       },
       include: {
         user: {

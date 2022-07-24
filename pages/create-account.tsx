@@ -1,10 +1,11 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../components/button";
 import Input from "../components/input";
+import useMutation from "../lib/useMutation";
 
 interface SignUpForm {
   name: string;
@@ -15,7 +16,6 @@ interface SignUpForm {
 
 export default function SignUp() {
   const router = useRouter();
-  const [result, setResult] = useState();
   const {
     register,
     handleSubmit,
@@ -23,23 +23,17 @@ export default function SignUp() {
   } = useForm<SignUpForm>({
     mode: "onChange",
   });
+  const [mutation, { loading, data, error }] = useMutation("api/create");
   const onValid = (validForm: SignUpForm) => {
-    fetch("/api/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(validForm),
-    })
-      .then((response) => response.json())
-      .then((data) => setResult(data?.ok));
+    if (loading) return;
+    mutation(validForm);
   };
   useEffect(() => {
-    if (result === true) {
-      alert("가입 성공!");
+    if (data?.ok) {
+      window.alert("가입 성공!");
       router.push("/log-in");
     }
-  }, [result, router]);
+  }, [data, router]);
 
   return (
     <div className=" h-screen w-screen flex justify-center items-center  bg-gradient-to-b from-indigo-200 to-pink-200">
@@ -89,7 +83,7 @@ export default function SignUp() {
                 })}
               ></Input>
               <div>
-                {result === false ? (
+                {error ? (
                   <span className="text-xs text-red-500">
                     ! 중복된 아이디입니다
                   </span>
@@ -117,7 +111,7 @@ export default function SignUp() {
             </div>
 
             <div className="mt-5">
-              <Button text="가입하기"></Button>
+              <Button text={loading ? "로딩중..." : "가입하기"}></Button>
             </div>
           </form>
           <div className="border-t-[1px] mt-10 flex justify-center">

@@ -58,11 +58,8 @@ export default function WriteReply() {
       >
         <textarea
           {...register("tweet", {
-            required: true,
             maxLength: { message: "글자수는 140자로 제한됩니다", value: 140 },
-            minLength: { message: "1자 이상 써주세요", value: 1 },
           })}
-          required
           placeholder="트윗 내용"
           className={cls(
             "w-full h-52 p-2 border-2 border-white rounded-md bg-gray-200 focus:bg-white",

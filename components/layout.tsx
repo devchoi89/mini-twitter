@@ -43,6 +43,28 @@ export default function Layout({
     }
   }, [state, router]);
 
+  //스크롤 퍼센트 계산
+  const [percent, setPercent] = useState(0);
+  function handleScroll() {
+    const percent = Math.floor(
+      (window.scrollY / (document.body.clientHeight - window.innerHeight)) * 100
+    );
+    setPercent(percent);
+  }
+
+  useEffect(() => {
+    function scrollListener() {
+      console.log(percent);
+      window.addEventListener("scroll", handleScroll);
+    }
+    scrollListener();
+    /*렌더링 될 때마다(스크롤을 해서 화면이 바뀌는 등) useEffect를 실행하므로,
+     해제하지 않으면 계속해서 eventListener를 생성하여 메모리 누수가 발생할 수 있다.*/
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
+
   /*random background image
   const images = [
     "bg-[url(https://www.ghibli.jp/gallery/umi005.jpg)] bg-left-bottom",
@@ -201,11 +223,11 @@ export default function Layout({
             </nav>
           ) : null}
         </div>
-        <div className="w-full max-w-2xl mx-auto border-x-[1px]">
+        <div className="flex flex-col w-full max-w-2xl mx-auto border-x-[1px]">
           <div
             onClick={onScrollTop}
             className={cls(
-              "cursor-pointer bg-white bg-opacity-90 w-full max-w-[36.9rem]  text-xl font-bold py-3 fixed z-10 top-0 flex pl-10 items-center"
+              "cursor-pointer bg-white bg-opacity-90 w-full max-w-[36.9rem]  text-xl font-bold py-3 fixed z-10 top-0 flex items-center"
             )}
           >
             {canGoBack ? (
@@ -232,7 +254,7 @@ export default function Layout({
               </button>
             ) : null}
             {title ? (
-              <div className="flex items-center pl-3">
+              <div className="flex items-center pl-14">
                 <span className="font-bold">{title}</span>
                 {verified ? (
                   <span className="pt-1 pl-1 text-sky-500">
@@ -252,10 +274,18 @@ export default function Layout({
                 ) : null}
               </div>
             ) : null}
+            <div className="fixed top-12 max-w-[36.9rem] w-full ">
+              <div id="bar" className={cls(" bg-red-500 z-20 h-1")}></div>
+            </div>
           </div>
           <div className={cls("pt-14")}>{children}</div>
         </div>
       </div>
+      <style jsx>{`
+        #bar {
+          width: ${percent}%;
+        }
+      `}</style>
     </div>
   );
 }

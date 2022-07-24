@@ -32,6 +32,7 @@ interface TweetProps {
   ondeleteclick: any;
   isLiked: boolean;
   isMyTweet: boolean;
+  [key: string]: any;
 }
 
 /* interface TweetWithCount extends Tweet {
@@ -63,6 +64,7 @@ export default function TweetRow({
   ondeleteclick,
   isLiked,
   isMyTweet,
+  ...rest
 }: TweetProps) {
   /*   const [mutation, { data, loading }] = useMutation("/api/like");
   const { mutate } = useSWRConfig();
@@ -79,7 +81,10 @@ export default function TweetRow({
   } */
   return (
     <Link href={`/tweet/${id}`}>
-      <div className="transition-all ease-in-out duration-300 cursor-pointer  px-5 pt-3 hover:bg-sky-50">
+      <div
+        {...rest}
+        className="transition-all ease-in-out duration-300 cursor-pointer  px-5 pt-3 hover:bg-sky-50"
+      >
         <div className="flex justify-end">
           <Link href="javascript:void(0)">
             {isMyTweet ? (
